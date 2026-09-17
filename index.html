@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Грани Эльдгрим</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans+Narrow:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans+Narrow:wght@400;700&family=Caveat:wght@400;600&display=swap">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 
@@ -411,6 +411,221 @@
   }
   @media print{#bar{display:none;}}
 
+  /* ══ книга: дневник ═══════════════════════════════════ */
+
+  /* рука */
+  .bk-note,.scrap-in{
+    font-family:Caveat,"Segoe Script","Bradley Hand",cursive;
+    font-size:1.5em;line-height:1.5;color:#2E2415;
+    letter-spacing:.005em;
+  }
+  .bk-note{min-height:2.4em;outline:none;}
+  .bk-note p{margin:0 0 .25em;max-width:none;}
+  .bk-note:empty::before,.bk-note > p:only-child:empty::before{
+    content:attr(data-ph);color:var(--ink-soft);opacity:.45;
+  }
+  .bk-note ul,.bk-note ol{margin:.1em 0 .3em;}
+
+  /* шапка страницы */
+  .bk-head{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:9px;
+    border-bottom:1px solid var(--rule);padding-bottom:6px;margin-bottom:12px;
+  }
+  .bk-head.sub{margin-left:18px;border-bottom-style:dotted;}
+  .bk-head h3{margin:0;outline:none;min-width:2ch;}
+  .bk-head h3:empty::before{content:"Заголовок";color:var(--ink-soft);opacity:.4;font-weight:400;}
+  .bk-kind,.bk-tocitem .ic{
+    font-family:"Segoe UI Symbol","Noto Sans Symbols2","DejaVu Sans",sans-serif;
+  }
+  .bk-kind{color:var(--rust);font-size:1.05em;line-height:1;}
+  .bk-date{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;
+    font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);outline:none;min-width:4ch;text-align:right;
+  }
+  .bk-date:empty::before{content:attr(data-ph);opacity:.4;}
+  .bk-sub .bk-body{margin-left:18px;}
+
+  /* поля и долги */
+  .ledger{width:100%;border-collapse:collapse;font-size:.94em;}
+  .ledger th{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-weight:400;
+    text-transform:uppercase;letter-spacing:.11em;font-size:.64rem;
+    color:var(--ink-soft);text-align:left;border-bottom:1px solid var(--iron);
+    padding:0 6px 4px 0;
+  }
+  .ledger td{padding:5px 6px 5px 0;border-bottom:1px dotted var(--rule);vertical-align:top;}
+  .ledger td span{outline:none;display:block;min-height:1.2em;}
+  [data-ph]:empty::before{content:attr(data-ph);color:var(--ink-soft);opacity:.42;}
+  .gloss dt[data-ph]:empty::before,.gloss dd[data-ph]:empty::before{font-weight:400;}
+  .ledger .lg-d{width:6.5em;font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:.86em;}
+  .ledger .lg-x{width:1.8em;text-align:right;}
+  .ledger tr.off .lg-k,.ledger tr.off .lg-v{text-decoration:line-through;opacity:.5;}
+  .lg-tick{
+    border:1px solid var(--rule);background:none;color:var(--rust);
+    width:19px;height:19px;line-height:1;cursor:pointer;padding:0;border-radius:2px;
+  }
+  .lg-tick[aria-pressed="true"]{background:var(--rust);color:#F2EBDA;border-color:var(--rust);}
+
+  /* обрывок чужой записки */
+  .scrap{
+    background:#DFD6BE;padding:14px 16px;margin:10px 0;
+    box-shadow:0 3px 9px rgba(0,0,0,.22);
+    transform:rotate(-.7deg);
+    clip-path:polygon(0 4px,4% 0,12% 5px,26% 1px,41% 6px,58% 0,73% 5px,88% 1px,100% 5px,
+                      100% calc(100% - 4px),86% 100%,71% calc(100% - 5px),54% 100%,
+                      38% calc(100% - 6px),22% 100%,9% calc(100% - 4px),0 100%);
+  }
+  .scrap-in{font-size:1.24em;color:#4A3B28;outline:none;}
+  .scrap-in p{margin:0 0 .2em;max-width:none;}
+
+  /* восковая печать */
+  .seal{display:flex;justify-content:center;align-items:center;margin:16px 0;}
+  .seal-in{
+    flex:0 0 auto;width:62px;height:62px;box-sizing:border-box;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%,#9E4429,#6B2814 70%,#521D0E);
+    box-shadow:0 3px 8px rgba(0,0,0,.4),inset 0 -2px 6px rgba(0,0,0,.35);
+    display:flex;align-items:center;justify-content:center;
+    font-family:Alegreya,Georgia,serif;font-size:1.7rem;color:#E8C9B4;
+    outline:none;transform:rotate(-6deg);
+  }
+
+  /* вклейки */
+  .blk.taped{padding:4px;}
+  .fig .tp{
+    position:absolute;width:52px;height:17px;z-index:3;
+    background:rgba(226,214,180,.62);
+    box-shadow:0 1px 2px rgba(0,0,0,.2);
+  }
+  .fig .tp-a{top:-7px;left:-10px;transform:rotate(-26deg);}
+  .fig .tp-b{bottom:-7px;right:-10px;transform:rotate(-26deg);}
+  .fig .pin{
+    position:absolute;top:-5px;left:50%;margin-left:-5px;width:11px;height:11px;z-index:3;
+    border-radius:50%;background:radial-gradient(circle at 35% 30%,#B9433A,#6E1F19);
+    box-shadow:0 2px 4px rgba(0,0,0,.45);
+  }
+  .fig .cn{
+    position:absolute;width:15px;height:15px;z-index:3;
+    border:0 solid rgba(60,48,32,.5);
+  }
+  .fig .cn-tl{top:0;left:0;border-top-width:7px;border-left-width:7px;
+    clip-path:polygon(0 0,100% 0,0 100%);}
+  .fig .cn-tr{top:0;right:0;border-top-width:7px;border-right-width:7px;
+    clip-path:polygon(0 0,100% 0,100% 100%);}
+  .fig .cn-bl{bottom:0;left:0;border-bottom-width:7px;border-left-width:7px;
+    clip-path:polygon(0 0,0 100%,100% 100%);}
+  .fig .cn-br{bottom:0;right:0;border-bottom-width:7px;border-right-width:7px;
+    clip-path:polygon(100% 0,100% 100%,0 100%);}
+  .blk.tp-tape .fig,.blk.tp-pin .fig{transform:rotate(-1.1deg);}
+  .blk.tp-corners .fig{transform:rotate(.6deg);}
+  .fig{position:relative;}
+
+  /* старение */
+  .bk-page{position:relative;}
+  .wear{position:absolute;inset:0;pointer-events:none;z-index:0;}
+  .wear .blot{
+    position:absolute;border-radius:50% 44% 52% 46%;
+    background:#2A2218;filter:blur(.4px);
+  }
+  .bk-page > *:not(.wear){position:relative;z-index:1;}
+  .bk-l::after,.bk-r::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:
+      radial-gradient(120% 60% at 50% 0%,rgba(90,70,40,.13),transparent 60%),
+      radial-gradient(120% 60% at 50% 100%,rgba(90,70,40,.13),transparent 60%);
+  }
+
+  /* ляссе */
+  .bk-book{position:relative;}
+  .bk-ribbons{
+    position:absolute;top:26px;right:-13px;z-index:6;
+    display:flex;flex-direction:column;gap:7px;align-items:flex-end;
+  }
+  .bk-rib{
+    border:0;cursor:pointer;padding:0;height:26px;width:26px;
+    border-radius:0 3px 3px 0;box-shadow:2px 2px 6px rgba(0,0,0,.42);
+    transition:width .16s;overflow:hidden;white-space:nowrap;
+    display:flex;align-items:center;
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;
+    font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#F2EBDA;
+  }
+  .bk-rib span{padding-left:9px;opacity:0;transition:opacity .16s;}
+  .bk-rib:hover,.bk-rib:focus-visible{width:auto;min-width:26px;padding-right:11px;}
+  .bk-rib:hover span,.bk-rib:focus-visible span{opacity:1;}
+  .bk-rib.r0{background:#7C3A1F;} .bk-rib.r1{background:#49535A;}
+  .bk-rib.r2{background:#5B6B45;} .bk-rib.r3{background:#6B4A2E;}
+  .bk-rib.r4{background:#54405C;}
+  .bk-rib.on{width:34px;box-shadow:2px 2px 6px rgba(0,0,0,.42),inset 3px 0 0 rgba(232,224,204,.75);}
+
+  /* оглавление с подразделами */
+  .bk-toclist li.lv2{margin-left:22px;}
+  .bk-toclist li.lv2 .bk-tocitem{font-size:.94em;color:var(--ink-soft);}
+  .bk-tocitem{grid-template-columns:auto auto 1fr auto;}
+  .bk-tocitem .ic{color:var(--rust);font-size:.9em;}
+  .bk-tocitem .dt{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-size:.68rem;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    margin-left:6px;
+  }
+  .bk-tocitem:has(.dt){grid-template-columns:auto auto auto 1fr auto;}
+
+  /* органы правки страницы */
+  .pg-ctl{margin:0 0 10px;align-items:center;}
+  .pg-lbl{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-size:.64rem;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-right:2px;
+  }
+  .pg-kind{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-size:.64rem;
+    text-transform:uppercase;letter-spacing:.08em;padding:3px 4px;
+    border:1px solid var(--rule);background:var(--vellum);color:var(--ink-soft);
+    border-radius:0;cursor:pointer;
+  }
+  .bk-addhere{
+    margin:auto;display:block;
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-size:.74rem;
+    text-transform:uppercase;letter-spacing:.12em;padding:9px 16px;
+    border:1px dashed var(--rule);background:none;color:var(--ink-soft);cursor:pointer;
+  }
+  .bk-addhere:hover{border-color:var(--rust);color:var(--rust);}
+  .bk-blank{display:flex;}
+  .bk-bar button.primary{background:#7C3A1F;border-color:#8E4726;}
+  .bk-bar button.primary:hover:not(:disabled){background:#95482A;}
+
+  /* в книге блоки правятся всегда, органы — только в правке */
+  .bk-page [data-path]{outline:none;}
+  .bk-page [data-path]:focus{
+    outline:2px solid var(--rust);outline-offset:2px;
+    background:rgba(124,58,31,.05);
+  }
+  .bk-page .blk{position:relative;}
+  body.editing .bk-page .blk.sel{background:rgba(124,58,31,.05);}
+  .bk-page .ctl{display:none;}
+  body.editing .bk-page .ctl{display:flex;gap:4px;flex-wrap:wrap;}
+  body.editing .bk-page .blk-ctl{
+    position:absolute;top:-9px;right:0;z-index:5;opacity:0;transition:opacity .12s;
+  }
+  body.editing .bk-page .blk.sel > .blk-ctl{opacity:1;}
+  .bk-page .rz{display:none;}
+  body.editing .bk-page .rz{display:block;}
+  .bk-page .fig figcaption:empty::before{content:"подпись";opacity:.4;}
+
+  /* тип страницы — тонкая подкраска */
+  .bk-kind-chapter .bk-head{border-bottom:2px solid var(--rust);}
+  .bk-kind-chapter h3{font-size:1.5em;}
+  .bk-kind-debt .bk-kind{color:var(--iron);}
+  .bk-kind-companion .bk-kind{color:#5B6B45;}
+
+  .msg.off{color:#C98A5E;}
+
+  @media (max-width:760px){
+    .bk-ribbons{top:auto;bottom:-13px;right:auto;left:14px;
+      flex-direction:row;align-items:flex-start;}
+    .bk-rib{border-radius:0 0 3px 3px;height:22px;width:22px;}
+  }
+  @media (prefers-reduced-motion: reduce){.bk-rib{transition:none;}}
+  @media print{.pg-ctl,.bk-ribbons,.wear{display:none!important;}}
+
   /* ── экран настройки ──────────────────────────────────── */
   #gate{
     position:fixed;inset:0;z-index:200;
@@ -481,10 +696,11 @@
   var GATE = document.getElementById('gate');
 
   var LS = {
-    cid:  'grani.clientId',
-    fid:  'grani.fileId',
-    mid:  'grani.mediaId',
-    bak:  'grani.backup'
+    cid: 'grani.clientId',
+    fid: 'grani.fileId',
+    mid: 'grani.mediaId',
+    tok: 'grani.token',
+    doc: 'grani.docCache'
   };
   var SCOPE = 'https://www.googleapis.com/auth/drive.file';
   var TEXT_NAME  = 'grani-list.json';
@@ -494,29 +710,57 @@
   var fileId = localStorage.getItem(LS.fid) || null;
   var mediaId = localStorage.getItem(LS.mid) || null;
   var dirty = false, mediaDirty = false, saving = false, lastSaved = null, saveTimer = null;
-  var midSeq = 0;
+  var online = false, midSeq = 0;
 
   function newMid(){ return 'm' + Date.now().toString(36) + (midSeq++).toString(36); }
-
   function two(n){ return n < 10 ? '0' + n : '' + n; }
   function clockNow(){ var d = new Date(); return two(d.getHours()) + ':' + two(d.getMinutes()); }
+
+  /* ── токен переживает перезагрузку страницы ───────────── */
+  (function(){
+    try {
+      var t = JSON.parse(localStorage.getItem(LS.tok) || 'null');
+      if (t && t.exp > Date.now() + 120000){ token = t.tok; tokenExp = t.exp; }
+    } catch (e){}
+  })();
+  function keepToken(){
+    try { localStorage.setItem(LS.tok, JSON.stringify({ tok: token, exp: tokenExp })); } catch (e){}
+  }
+  function dropToken(){
+    token = null; tokenExp = 0;
+    try { localStorage.removeItem(LS.tok); } catch (e){}
+  }
+
+  /* ── местный кэш текста: страница открывается мгновенно ── */
+  function cacheDoc(d){
+    try { localStorage.setItem(LS.doc, JSON.stringify({ at: Date.now(), doc: d })); } catch (e){}
+  }
+  function readCache(){
+    try {
+      var c = JSON.parse(localStorage.getItem(LS.doc) || 'null');
+      return c && c.doc ? c : null;
+    } catch (e){ return null; }
+  }
 
   var statusText = '';
   function status(t){ statusText = t; paintBar(); }
 
   function paintBar(){
     if (!DOC){
-      BAR.innerHTML = '<span class="msg">'
-        + (statusText || 'не подключено').replace(/[<>&]/g, '') + '</span>'
-        + '<button type="button" id="b-cfg" title="Настройки">\u2699</button>';
+      BAR.innerHTML = '<span class="msg">' + (statusText || 'не подключено').replace(/[<>&]/g, '') + '</span>'
+        + '<button type="button" id="b-cfg" title="Настройки">⚙</button>';
       BAR.hidden = false;
       document.getElementById('b-cfg').onclick = openGate;
       return;
     }
-    var s = statusText || (saving ? 'сохраняю…' : (dirty ? 'есть несохранённое' : (lastSaved ? 'сохранено ' + lastSaved : 'готово')));
+    var s = statusText || (
+      saving ? 'сохраняю…'
+      : !online ? (dirty ? 'записано в браузере' : 'не на связи с Диском')
+      : dirty ? 'есть несохранённое'
+      : lastSaved ? 'сохранено ' + lastSaved : 'готово');
     BAR.innerHTML =
-      '<span class="msg">' + s.replace(/[<>&]/g, '') + '</span>'
-      + '<button type="button" id="b-edit">' + (editing ? 'Готово' : 'Править') + '</button>'
+      '<span class="msg' + (online ? '' : ' off') + '">' + s.replace(/[<>&]/g, '') + '</span>'
+      + '<button type="button" id="b-edit">' + (editing ? 'Готово' : 'Правка') + '</button>'
       + '<button type="button" id="b-cfg" title="Настройки">⚙</button>';
     BAR.hidden = false;
     document.getElementById('b-edit').onclick = function(){
@@ -530,22 +774,14 @@
   function touch(){
     dirty = true;
     paintBar();
-    stash();
     clearTimeout(saveTimer);
     saveTimer = setTimeout(pushSave, 1400);
   }
 
-  /* аварийная копия текста в браузере — на случай, если Диск недоступен */
-  function stash(){
-    try {
-      var d = editing ? collect() : DOC;
-      if (!d) return;
-      d.rev = (d.rev || 0);
-      localStorage.setItem(LS.bak, JSON.stringify({ rev: d.rev + 1, at: Date.now(), doc: d }));
-    } catch (e){}
-  }
-  function readStash(){
-    try { return JSON.parse(localStorage.getItem(LS.bak) || 'null'); } catch (e){ return null; }
+  /* живо ли то, что сейчас на экране: собирать из DOM можно только
+     когда он отрисован по текущему DOC */
+  function liveCollect(){
+    return editing || BOOK.classList.contains('on') ? collect() : DOC;
   }
 
   /* ── Google ───────────────────────────────────────────── */
@@ -554,37 +790,41 @@
     opts.headers = opts.headers || {};
     opts.headers['Authorization'] = 'Bearer ' + token;
     return fetch(url, opts).then(function(r){
-      if (r.status === 401){ token = null; throw new Error('auth'); }
+      if (r.status === 401 || r.status === 403){ dropToken(); throw new Error('auth'); }
       if (!r.ok) return r.text().then(function(t){ throw new Error(r.status + ' ' + t.slice(0, 200)); });
       return r;
     });
   }
 
   function ensureToken(interactive){
-    var now = Date.now();
-    if (token && now < tokenExp - 60000) return Promise.resolve(token);
+    if (token && Date.now() < tokenExp - 60000) return Promise.resolve(token);
     return new Promise(function(res, rej){
       if (!tokenClient) return rej(new Error('no-client'));
+      var done = false;
+      var guard = setTimeout(function(){
+        if (!done){ done = true; rej(new Error('timeout')); }
+      }, interactive ? 120000 : 12000);
       tokenClient.callback = function(resp){
+        if (done) return;
+        done = true; clearTimeout(guard);
         if (resp && resp.access_token){
           token = resp.access_token;
           tokenExp = Date.now() + (parseInt(resp.expires_in, 10) || 3500) * 1000;
+          keepToken();
           res(token);
         } else rej(new Error('denied'));
       };
       try { tokenClient.requestAccessToken({ prompt: interactive ? 'consent' : '' }); }
-      catch (e){ rej(e); }
+      catch (e){ done = true; clearTimeout(guard); rej(e); }
     });
   }
 
   function driveFind(name){
     var q = encodeURIComponent("name='" + name + "' and trashed=false");
-    return gapiFetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&fields=files(id,name,modifiedTime)&pageSize=10')
+    return gapiFetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&fields=files(id,name)&pageSize=10')
       .then(function(r){ return r.json(); })
       .then(function(j){ return (j.files && j.files[0]) || null; });
   }
-  /* создаём в два шага: сначала пустой файл, потом содержимое —
-     так надёжнее, чем multipart из браузера */
   function driveCreate(name, obj){
     return gapiFetch('https://www.googleapis.com/drive/v3/files?fields=id', {
       method: 'POST',
@@ -593,71 +833,57 @@
     }).then(function(r){ return r.json(); })
       .then(function(j){ return driveWrite(j.id, obj).then(function(){ return j; }); });
   }
-
   function driveRead(id){
     return gapiFetch('https://www.googleapis.com/drive/v3/files/' + id + '?alt=media')
       .then(function(r){ return r.json(); });
   }
 
   var SIMPLE_MAX = 4 * 1024 * 1024;
-
   function driveWrite(id, obj){
     var body = JSON.stringify(obj);
     if (body.length <= SIMPLE_MAX) return driveSimple(id, body);
     return driveResumable(id, body).catch(function(){ return driveSimple(id, body); });
   }
-
   function driveSimple(id, body){
     return gapiFetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=media',
       { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: body });
   }
-
-  /* большие файлы (картинки) — через сессию догрузки, без потолка в 5 МБ */
   function driveResumable(id, body){
     return gapiFetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=resumable', {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Upload-Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json; charset=UTF-8', 'X-Upload-Content-Type': 'application/json' },
       body: '{}'
     }).then(function(r){
       var loc = r.headers.get('Location') || r.headers.get('location');
       if (!loc) throw new Error('no-session');
-      return fetch(loc, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: body
-      }).then(function(r2){
-        if (!r2.ok) throw new Error('upload ' + r2.status);
-        return r2;
-      });
+      return fetch(loc, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: body })
+        .then(function(r2){ if (!r2.ok) throw new Error('upload ' + r2.status); return r2; });
     });
   }
 
   function pushSave(){
-    if (saving || !token || !fileId) return;
-    saving = true; statusText = ''; paintBar();
-    var snap = editing ? collect() : DOC;
+    if (saving || !DOC) return;
+    var snap = liveCollect();
     snap.rev = (snap.rev || 0) + 1;
     DOC = snap;
+    cacheDoc(snap);
+    if (!online || !token || !fileId){ paintBar(); return; }
+    saving = true; statusText = ''; paintBar();
     var jobs = [driveWrite(fileId, { v: 1, doc: snap })];
     if (mediaDirty && mediaId) jobs.push(driveWrite(mediaId, { v: 1, media: MEDIA }));
     Promise.all(jobs).then(function(){
       saving = false; dirty = false; mediaDirty = false;
-      try { localStorage.removeItem(LS.bak); } catch (e){}
       lastSaved = clockNow(); paintBar();
     }).catch(function(e){
       saving = false;
       if (String(e.message) === 'auth'){
-        ensureToken(false).then(pushSave).catch(function(){ status('нужен вход — нажмите ⚙'); });
+        online = false;
+        connect(false).then(pushSave).catch(function(){ status('нет доступа к Диску — нажмите ⚙'); });
       } else status('не сохранилось: ' + String(e.message).slice(0, 60));
     });
   }
 
-  window.addEventListener('beforeunload', function(e){
-    if (dirty){ pushSave(); e.preventDefault(); e.returnValue = ''; }
-  });
+  window.addEventListener('beforeunload', function(){ if (dirty) pushSave(); });
   document.addEventListener('visibilitychange', function(){
     if (document.visibilityState === 'hidden' && dirty) pushSave();
   });
@@ -668,66 +894,74 @@
 
   function drawGate(msg){
     var cid = localStorage.getItem(LS.cid) || '';
-    var b = readStash();
-    var bak = b && b.doc && (b.rev || 0) > ((DOC && DOC.rev) || 0) + 1;
-    var bakAt = bak ? new Date(b.at).toLocaleString('ru') : '';
     GATE.innerHTML =
       '<div class="gate-card">'
-      + '<h2>Подключение к Google Диску</h2>'
+      + '<h2>Google Диск</h2>'
       + (msg ? '<p class="gate-msg">' + msg + '</p>' : '')
+      + '<p class="gate-hint">Состояние: <strong>' + (online ? 'на связи' : 'не на связи') + '</strong>. '
+      + 'Книга работает и без Диска — записи ложатся в браузер и уедут на Диск, как только связь появится.</p>'
       + '<label>OAuth Client ID</label>'
       + '<input id="g-cid" type="text" spellcheck="false" placeholder="…apps.googleusercontent.com" value="' + cid.replace(/"/g,'&quot;') + '">'
-      + '<p class="gate-hint">Создаётся один раз в Google Cloud Console: APIs &amp; Services → Credentials → OAuth client ID → Web application. В «Authorized JavaScript origins» впишите адрес этой страницы: <code>' + location.origin + '</code>. Там же включите Google Drive API.</p>'
+      + '<p class="gate-hint">Google Cloud Console → Clients → Web application. В «Authorized JavaScript origins» — адрес этой страницы: <code>' + location.origin + '</code>.</p>'
       + '<div class="gate-row">'
-      + '<button type="button" id="g-go" class="primary">Подключить</button>'
+      + '<button type="button" id="g-go" class="primary">' + (online ? 'Переподключить' : 'Подключить') + '</button>'
+      + (fileId ? '<button type="button" id="g-reload">Перечитать с Диска</button>' : '')
       + '<button type="button" id="g-close">Закрыть</button>'
       + '</div>'
-      + '<p class="gate-hint">Файлы: <code>' + TEXT_NAME + '</code> и <code>' + MEDIA_NAME + '</code> в корне Диска. Приложение видит только их.</p>'
-      + (fileId ? '<div class="gate-row">'
-          + '<button type="button" id="g-reload">Перечитать с Диска</button>'
-          + (bak ? '<button type="button" id="g-restore">Восстановить копию от ' + bakAt + '</button>' : '')
-          + '<button type="button" id="g-forget">Отвязать файлы</button>'
-          + '</div>' : '')
+      + (fileId ? '<div class="gate-row"><button type="button" id="g-forget">Отвязать файлы</button></div>' : '')
       + '</div>';
     document.getElementById('g-close').onclick = closeGate;
     document.getElementById('g-go').onclick = function(){
       var v = document.getElementById('g-cid').value.trim();
       if (!v){ drawGate('Впишите Client ID.'); return; }
       localStorage.setItem(LS.cid, v);
+      dropToken();
       initClient(v);
-      ensureToken(true).then(openOrCreate).then(function(){ closeGate(); })
-        .catch(function(e){ drawGate('Не вышло: ' + String(e.message)); });
+      connect(true).then(function(){ closeGate(); if (dirty) pushSave(); })
+        .catch(function(e){ drawGate(explain(e)); });
     };
     var rl = document.getElementById('g-reload');
     if (rl) rl.onclick = function(){
-      closeGate();
-      status('перечитываю…');
-      Promise.all([driveRead(fileId), driveRead(mediaId)]).then(adopt)
+      closeGate(); status('перечитываю…');
+      Promise.all([driveRead(fileId), driveRead(mediaId)])
+        .then(function(d){ adopt(d, true); })
         .catch(function(e){ status('не вышло: ' + String(e.message).slice(0, 50)); });
-    };
-    var rs = document.getElementById('g-restore');
-    if (rs) rs.onclick = function(){
-      DOC = b.doc; normalise(); render(); closeGate(); touch();
     };
     var f = document.getElementById('g-forget');
     if (f) f.onclick = function(){
       localStorage.removeItem(LS.fid); localStorage.removeItem(LS.mid);
-      fileId = null; mediaId = null; drawGate('Файлы отвязаны.');
+      fileId = null; mediaId = null; online = false;
+      drawGate('Файлы отвязаны. Текст остался в браузере.');
     };
   }
 
+  function explain(e){
+    var m = String(e && e.message || e);
+    if (m === 'timeout') return 'Google не ответил. Скорее всего браузер заблокировал всплывающее окно — разрешите их для этой страницы и нажмите ещё раз.';
+    if (m === 'denied') return 'Доступ не выдан.';
+    if (m === 'no-client') return 'Скрипт Google не загрузился — проверьте блокировщик рекламы.';
+    return 'Не вышло: ' + m.slice(0, 120);
+  }
+
   function initClient(cid){
-    if (!window.google || !google.accounts || !google.accounts.oauth2) return;
+    if (!window.google || !google.accounts || !google.accounts.oauth2) return false;
     tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: cid, scope: SCOPE, callback: function(){}
     });
+    return true;
   }
 
-  /* первая загрузка: содержимое берётся из seed.json рядом со страницей */
+  /* ── подключение и обмен с Диском ─────────────────────── */
+  function connect(interactive){
+    return ensureToken(interactive).then(function(){
+      online = true;
+      return openOrCreate();
+    });
+  }
+
   var seedCache = null;
   function getSeed(){
     if (seedCache) return Promise.resolve(seedCache);
-    status('первый запуск: читаю seed.json…');
     return fetch('seed.json', { cache: 'no-store' })
       .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function(j){ seedCache = { doc: j.doc || {}, media: j.media || {} }; return seedCache; })
@@ -736,22 +970,21 @@
 
   function openOrCreate(){
     if (fileId && mediaId){
-      return Promise.all([driveRead(fileId), driveRead(mediaId)]).then(adopt);
+      return Promise.all([driveRead(fileId), driveRead(mediaId)]).then(function(d){ adopt(d); });
     }
     return Promise.all([driveFind(TEXT_NAME), driveFind(MEDIA_NAME)]).then(function(f){
       if (f[0] && f[1]){
-        fileId = f[0].id; mediaId = f[1].id;
-        remember();
-        return Promise.all([driveRead(fileId), driveRead(mediaId)]).then(adopt);
+        fileId = f[0].id; mediaId = f[1].id; remember();
+        return Promise.all([driveRead(fileId), driveRead(mediaId)]).then(function(d){ adopt(d); });
       }
       return getSeed().then(function(seed){
         status('создаю файлы на Диске…');
-        var pT = f[0] ? Promise.resolve(f[0]) : driveCreate(TEXT_NAME,  { v:1, doc: seed.doc });
+        var base = DOC || seed.doc;
+        var pT = f[0] ? Promise.resolve(f[0]) : driveCreate(TEXT_NAME,  { v:1, doc: base });
         var pM = f[1] ? Promise.resolve(f[1]) : driveCreate(MEDIA_NAME, { v:1, media: seed.media });
         return Promise.all([pT, pM]).then(function(r){
-          fileId = r[0].id; mediaId = r[1].id;
-          remember();
-          return adopt([{ doc: seed.doc }, { media: seed.media }]);
+          fileId = r[0].id; mediaId = r[1].id; remember();
+          adopt([{ doc: base }, { media: seed.media }]);
         });
       });
     });
@@ -762,17 +995,32 @@
     localStorage.setItem(LS.mid, mediaId);
   }
 
-  function adopt(d){
-    DOC   = (d[0] && d[0].doc)   || { sections: [] };
-    MEDIA = (d[1] && d[1].media) || {};
+  /* Диск против браузера: у кого rev выше, тот и прав.
+     force=true — «перечитать с Диска», берём диск без разговоров. */
+  function adopt(d, force){
+    var fromDrive = (d[0] && d[0].doc) || null;
+    var media     = (d[1] && d[1].media) || {};
+    var localRev  = (DOC && DOC.rev) || 0;
+    var driveRev  = (fromDrive && fromDrive.rev) || 0;
+    var takeLocal = !force && DOC && localRev > driveRev;
+
+    MEDIA = media;
+    if (!takeLocal && fromDrive) DOC = fromDrive;
+    if (!DOC) DOC = { sections: [] };
+
     normalise();
     render();
-    dirty = false; mediaDirty = false; lastSaved = clockNow(); statusText = '';
-    var b = readStash();
-    if (b && b.doc && (b.rev || 0) > (DOC.rev || 0) + 1){
-      statusText = 'есть более свежая копия — нажмите ⚙';
+    if (BOOK.classList.contains('on')) bookRender();
+    cacheDoc(DOC);
+    online = true;
+    if (takeLocal){
+      dirty = true; statusText = '';
+      paintBar();
+      pushSave();
+    } else {
+      dirty = false; mediaDirty = false; lastSaved = clockNow(); statusText = '';
+      paintBar();
     }
-    paintBar();
   }
 
   function normalise(){
@@ -786,24 +1034,47 @@
         }
       });
     });
+    bookMigrate();
   }
 
+  /* ── запуск ───────────────────────────────────────────── */
   function boot(){
+    var c = readCache();
+    if (c){
+      DOC = c.doc;
+      MEDIA = {};
+      normalise();
+      render();
+      statusText = 'открыто из браузера…';
+      paintBar();
+    }
+
     var cid = localStorage.getItem(LS.cid);
-    if (!cid){ drawGate(); GATE.hidden = false; return; }
+    if (!cid){
+      if (!DOC){ drawGate(); GATE.hidden = false; }
+      else status('не подключено к Диску — нажмите ⚙');
+      return;
+    }
+
     var tries = 0;
     (function wait(){
-      if (window.google && google.accounts && google.accounts.oauth2){
-        initClient(cid);
-        ensureToken(false).then(openOrCreate)
-          .catch(function(){ GATE.hidden = false; drawGate('Нужно подтвердить доступ.'); });
+      if (initClient(cid)){
+        connect(false).catch(function(e){
+          online = false;
+          if (DOC) status('нет связи с Диском — пишите, сохраню позже');
+          else { GATE.hidden = false; drawGate(explain(e)); }
+        });
       } else if (tries++ < 40) setTimeout(wait, 150);
-      else { GATE.hidden = false; drawGate('Не загрузился скрипт Google.'); }
+      else {
+        online = false;
+        if (DOC) status('скрипт Google не загрузился');
+        else { GATE.hidden = false; drawGate('Скрипт Google не загрузился — проверьте блокировщик.'); }
+      }
     })();
   }
 
   document.addEventListener('input', function(e){
-    if (editing && e.target && e.target.hasAttribute && e.target.hasAttribute('data-path')) touch();
+    if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-path')) touch();
   }, true);
 
   var ROOT = document.getElementById('root');
@@ -857,8 +1128,26 @@
     for (var i = 0; i < parts.length - 1; i++) cur = cur[parts[i]];
     cur[parts[parts.length - 1]] = val;
   }
+  /* путь вида "sections.2.blocks.1" -> массив и индекс */
+  function parentOf(path){
+    var i = path.lastIndexOf('.');
+    return { arr: get(path.slice(0, i)), idx: parseInt(path.slice(i + 1), 10), host: path.slice(0, i) };
+  }
+  function hasPath(path){
+    var parts = path.split('.'), cur = DOC;
+    for (var i = 0; i < parts.length; i++){
+      if (cur == null || typeof cur !== 'object') return false;
+      cur = cur[parts[i]];
+    }
+    return cur !== undefined;
+  }
+
   function ed(path, tag, cls){
     return '<' + tag + ' data-path="' + esc(path) + '"'
+      + (cls ? ' class="' + cls + '"' : '') + '>' + clean(get(path)) + '</' + tag + '>';
+  }
+  function edp(path, tag, ph, cls){
+    return '<' + tag + ' data-path="' + esc(path) + '" data-ph="' + esc(ph) + '"'
       + (cls ? ' class="' + cls + '"' : '') + '>' + clean(get(path)) + '</' + tag + '>';
   }
   function btn(act, label){
@@ -877,12 +1166,53 @@
 
   function block(b, p){
     if (b.t === 'p') return ed(p + '.v', 'p');
+
+    /* запись от руки — основная поверхность для письма в книге */
+    if (b.t === 'note'){
+      return '<div class="bk-note" data-path="' + esc(p + '.v') + '" data-rich="1"'
+        + ' data-ph="Пиши здесь\u2026">' + clean(b.v, true) + '</div>';
+    }
+
+    /* обрывок чужой записки */
+    if (b.t === 'scrap'){
+      return '<div class="scrap"><div class="scrap-in" data-path="' + esc(p + '.v') + '" data-rich="1">'
+        + clean(b.v, true) + '</div></div>';
+    }
+
+    /* восковая печать */
+    if (b.t === 'seal'){
+      return '<div class="seal"><span class="seal-in" data-path="' + esc(p + '.v') + '">'
+        + clean(b.v) + '</span></div>';
+    }
+
+    /* разворот долгов: взято / отдано */
+    if (b.t === 'ledger'){
+      var rows = (b.rows || []).map(function(r, i){
+        var rp = p + '.rows.' + i;
+        return '<tr class="' + (r.off ? 'off' : '') + '">'
+          + '<td class="lg-d">' + edp(rp + '.d', 'span', 'дата') + '</td>'
+          + '<td class="lg-k">' + edp(rp + '.k', 'span', 'что') + '</td>'
+          + '<td class="lg-v">' + edp(rp + '.v', 'span', 'кому / от кого') + '</td>'
+          + '<td class="lg-x"><button type="button" class="lg-tick" data-tick="' + esc(rp) + '"'
+          + ' title="' + (r.off ? 'Отдано' : 'Не отдано') + '" aria-pressed="' + (r.off ? 'true' : 'false') + '">'
+          + (r.off ? '\u2715' : '\u00b7') + '</button></td></tr>';
+      }).join('');
+      return '<table class="ledger"><thead><tr>'
+        + '<th>Когда</th><th>Что</th><th>Кому / от кого</th><th></th>'
+        + '</tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
     if (b.t === 'img'){
       var sh = b.sh || 'none';
       var isBook = b.link === 'book';
       var src = b.mid ? (MEDIA[b.mid] || '') : (b.src || '');
+      var tape = b.tape && b.tape !== 'none' ? b.tape : '';
       return '<figure class="fig sh-' + sh + (isBook ? ' book' : '') + '"'
         + (isBook ? ' data-open="book" role="button" tabindex="0"' : '') + '>'
+        + (tape === 'tape' ? '<i class="tp tp-a"></i><i class="tp tp-b"></i>' : '')
+        + (tape === 'pin' ? '<i class="pin"></i>' : '')
+        + (tape === 'corners' ? '<i class="cn cn-tl"></i><i class="cn cn-tr"></i>'
+                              + '<i class="cn cn-bl"></i><i class="cn cn-br"></i>' : '')
         + '<img src="' + esc(src) + '" alt="">'
         + ed(p + '.cap', 'figcaption')
         + (isBook ? '<span class="hintline">Нажмите, чтобы открыть</span>' : '')
@@ -903,7 +1233,8 @@
     }
     if (b.t === 'gloss'){
       return '<dl class="gloss' + (b.say ? ' say' : '') + '">' + b.items.map(function(_, i){
-        return '<div>' + ed(p + '.items.' + i + '.k', 'dt') + ed(p + '.items.' + i + '.v', 'dd') + '</div>';
+        return '<div>' + edp(p + '.items.' + i + '.k', 'dt', 'поле')
+          + edp(p + '.items.' + i + '.v', 'dd', '\u2026') + '</div>';
       }).join('') + '</dl>';
     }
     if (b.t === 'levels'){
@@ -927,6 +1258,28 @@
     return '';
   }
 
+  function blkNode(b, path){
+    return '<div class="blk' + (b.w || b.minh ? ' sized' : '')
+      + (b.t === 'img' && b.tape && b.tape !== 'none' ? ' taped tp-' + b.tape : '')
+      + '" data-blk="' + esc(path) + '"' + blkStyle(b) + '>'
+      + '<div class="ctl blk-ctl">'
+      + '<button type="button" class="grip" draggable="true" title="Перетащить">&#10294;</button>'
+      + btn('blk-up','↑') + btn('blk-down','↓')
+      + btn('al-left','слева') + btn('al-right','справа')
+      + btn('al-center','центр') + btn('al-none','в строку')
+      + (b.t === 'img' ? btn('img-swap','заменить')
+          + btn('sh-cycle', 'тень: ' + (b.sh === 'box' ? 'рамка' : b.sh === 'soft' ? 'мягкая' : 'нет'))
+          + btn('tape-cycle', 'вклейка: ' + TAPE_RU[b.tape || 'none']) : '')
+      + (b.t === 'ledger' ? btn('row-add','+ строка') : '')
+      + (b.t === 'gloss' || b.t === 'kit' ? btn('row-add','+ поле') : '')
+      + (b.link === 'book' ? btn('book-open','открыть книгу') : '')
+      + btn('blk-reset','сброс') + btn('blk-del','×') + '</div>'
+      + '<span class="rz rz-w"></span><span class="rz rz-h"></span><span class="rz rz-c"></span>'
+      + block(b, path) + '</div>';
+  }
+
+  var TAPE_RU = { none:'нет', tape:'скотч', corners:'уголки', pin:'булавка' };
+
   function render(){
     var h = '<div class="sheet"><div class="inner">';
     h += '<header class="head"><div class="headtop">'
@@ -939,25 +1292,14 @@
     }).join('') + '</dl></header>';
 
     DOC.sections.forEach(function(s, si){
-      h += '<section' + (s.lede ? ' class="lede"' : '') + ' data-sec="' + si + '">'
+      h += '<section' + (s.lede ? ' class="lede"' : '') + ' data-sec="' + si + '"'
+        + ' data-host="sections.' + si + '.blocks">'
         + ed('sections.' + si + '.h', 'h2')
         + '<div class="ctl sec-ctl">' + btn('sec-up','↑ раздел') + btn('sec-down','↓ раздел')
         + btn('add-p','+ абзац') + btn('add-img','+ картинка')
         + btn('add-sec','+ раздел ниже') + btn('sec-del','× раздел') + '</div>'
         + s.blocks.map(function(b, bi){
-            return '<div class="blk' + (b.w || b.minh ? ' sized' : '') + '" data-blk="'
-              + si + '.' + bi + '"' + blkStyle(b) + '>'
-              + '<div class="ctl blk-ctl">'
-              + '<button type="button" class="grip" draggable="true" title="Перетащить">&#10294;</button>'
-              + btn('blk-up','↑') + btn('blk-down','↓')
-              + btn('al-left','слева') + btn('al-right','справа')
-              + btn('al-center','центр') + btn('al-none','в строку')
-              + (b.t === 'img' ? btn('img-swap','заменить') + btn('sh-cycle', 'тень: '
-                  + (b.sh === 'box' ? 'рамка' : b.sh === 'soft' ? 'мягкая' : 'нет')) : '')
-              + (b.link === 'book' ? btn('book-open','открыть книгу') : '')
-              + btn('blk-reset','сброс') + btn('blk-del','×') + '</div>'
-              + '<span class="rz rz-w"></span><span class="rz rz-h"></span><span class="rz rz-c"></span>'
-              + block(b, 'sections.' + si + '.blocks.' + bi) + '</div>';
+            return blkNode(b, 'sections.' + si + '.blocks.' + bi);
           }).join('')
         + '</section>';
     });
@@ -974,23 +1316,27 @@
 
   var selKey = null;
   function applySel(){
-    var n = ROOT.querySelectorAll('.blk.sel');
+    var n = document.querySelectorAll('.blk.sel');
     for (var i = 0; i < n.length; i++) n[i].classList.remove('sel');
     if (!selKey || !editing) return;
-    var el = ROOT.querySelector('.blk[data-blk="' + selKey + '"]');
+    var el = document.querySelector('.blk[data-blk="' + CSS.escape(selKey) + '"]');
     if (el) el.classList.add('sel');
   }
 
+  /* Лист правится только в режиме правки. Книга пишется всегда —
+     режим правки в ней отвечает лишь за раскладку и картинки. */
   function markEditable(on){
-    var pools = [ROOT, BOOK];
-    for (var p = 0; p < pools.length; p++){
-      var nodes = pools[p].querySelectorAll('[data-path]');
-      for (var i = 0; i < nodes.length; i++){
-        if (on) nodes[i].setAttribute('contenteditable', 'true');
-        else nodes[i].removeAttribute('contenteditable');
-      }
+    var nodes = ROOT.querySelectorAll('[data-path]');
+    for (var i = 0; i < nodes.length; i++){
+      if (on) nodes[i].setAttribute('contenteditable', 'true');
+      else nodes[i].removeAttribute('contenteditable');
     }
+    bookEditable();
     document.body.classList.toggle('editing', !!on);
+  }
+  function bookEditable(){
+    var nodes = BOOK.querySelectorAll('[data-path]');
+    for (var i = 0; i < nodes.length; i++) nodes[i].setAttribute('contenteditable', 'true');
   }
 
   function collect(){
@@ -1090,24 +1436,27 @@
     shrink(f).then(function(r){
       var src = r.src, sh = r.alpha ? 'none' : 'box';
       DOC = collect();
+      var inBook = false;
       if (tg.kind === 'crest'){ MEDIA.crest = src; mediaDirty = true; }
       else if (tg.kind === 'swap'){
-        var sb = DOC.sections[tg.si].blocks[tg.bi];
+        inBook = tg.path.indexOf('book.') === 0;
+        var sb = get(tg.path);
         if (!sb.mid) sb.mid = newMid();
         MEDIA[sb.mid] = src; delete sb.src; sb.sh = sh; mediaDirty = true;
       }
       else {
+        inBook = tg.host.indexOf('book.') === 0;
         var mid = newMid();
         MEDIA[mid] = src; mediaDirty = true;
-        DOC.sections[tg.si].blocks.push({ t:'img', mid:mid, cap:'Подпись', sh:sh });
+        get(tg.host).push({ t:'img', mid:mid, cap:'Подпись', sh:sh, tape: inBook ? 'corners' : 'none' });
       }
       touch();
-      render();
+      repaint(inBook ? 'book' : 'sheet');
       status('картинка вставлена');
     }).catch(function(){ status('картинку не удалось прочитать'); });
   });
 
-  ROOT.addEventListener('click', function(e){
+  function blkClick(e, scope){
     if (!editing) return;
     var hit = e.target.closest ? e.target.closest('.blk') : null;
     var key = hit ? hit.getAttribute('data-blk') : null;
@@ -1116,105 +1465,131 @@
     if (!b) return;
     var act = b.getAttribute('data-act');
     var blkEl = b.closest('[data-blk]');
-    var secEl = b.closest('[data-sec]');
-    var si = -1, bi = -1;
-    if (blkEl){
-      var pr = blkEl.getAttribute('data-blk').split('.');
-      si = parseInt(pr[0], 10); bi = parseInt(pr[1], 10);
-    } else if (secEl){
-      si = parseInt(secEl.getAttribute('data-sec'), 10);
-    }
-    if (si < 0) return;
+    var hostEl = b.closest('[data-host]');
+    var path = blkEl ? blkEl.getAttribute('data-blk') : null;
+    var host = hostEl ? hostEl.getAttribute('data-host') : null;
 
     if (act === 'book-open'){ DOC = collect(); bookOpen(); return; }
-    if (act === 'img-swap'){ pick({ kind:'swap', si:si, bi:bi }); return; }
-    if (act === 'add-img'){ pick({ kind:'add', si:si }); return; }
+    if (act === 'img-swap' && path){ pick({ kind:'swap', path:path }); return; }
+    if (act === 'add-img' && host){ pick({ kind:'add', host:host }); return; }
 
     DOC = collect();
+
+    if (path && hasPath(path)){
+      var P = parentOf(path), arr = P.arr, bi = P.idx, blk = arr[bi];
+      if (act === 'blk-up'){ if (!move(arr, bi, -1)) return; }
+      else if (act === 'blk-down'){ if (!move(arr, bi, 1)) return; }
+      else if (act === 'blk-del') arr.splice(bi, 1);
+      else if (act === 'sh-cycle')
+        blk.sh = (blk.sh === 'none' || !blk.sh) ? 'soft' : (blk.sh === 'soft' ? 'box' : 'none');
+      else if (act === 'tape-cycle'){
+        var order = ['none','tape','corners','pin'];
+        blk.tape = order[(order.indexOf(blk.tape || 'none') + 1) % order.length];
+      }
+      else if (act === 'al-left') blk.align = 'left';
+      else if (act === 'al-right') blk.align = 'right';
+      else if (act === 'al-center') blk.align = 'center';
+      else if (act === 'al-none') blk.align = 'none';
+      else if (act === 'blk-reset'){ delete blk.w; delete blk.minh; blk.align = 'none'; }
+      else if (act === 'row-add'){
+        if (blk.t === 'ledger') (blk.rows = blk.rows || []).push({ d:'', k:'', v:'', off:false });
+        else (blk.items = blk.items || []).push({ k:'', v:'' });
+      }
+      else return;
+      touch(); repaint(scope); return;
+    }
+
+    if (host && hasPath(host)){
+      var H = get(host);
+      if (act === 'add-p') H.push({ t:'p', v:'Новый абзац.' });
+      else if (act === 'add-note') H.push({ t:'note', v:'' });
+      else if (act === 'add-ledger') H.push({ t:'ledger', rows:[{ d:'', k:'', v:'', off:false }] });
+      else if (act === 'add-gloss') H.push({ t:'gloss', items:[{ k:'', v:'' }] });
+      else if (act === 'add-scrap') H.push({ t:'scrap', v:'Чужой почерк.' });
+      else if (act === 'add-seal') H.push({ t:'seal', v:'\u0421' });
+      else { sheetSec(act, hostEl, scope); return; }
+      touch(); repaint(scope); return;
+    }
+
+    sheetSec(act, hostEl, scope);
+  }
+
+  function sheetSec(act, hostEl, scope){
+    var secEl = hostEl && hostEl.hasAttribute('data-sec') ? hostEl : null;
+    if (!secEl) return;
+    var si = parseInt(secEl.getAttribute('data-sec'), 10);
     var S = DOC.sections;
-    if (act === 'sec-up') move(S, si, -1);
-    else if (act === 'sec-down') move(S, si, 1);
+    if (act === 'sec-up'){ if (!move(S, si, -1)) return; }
+    else if (act === 'sec-down'){ if (!move(S, si, 1)) return; }
     else if (act === 'sec-del') S.splice(si, 1);
     else if (act === 'add-sec') S.splice(si + 1, 0, { h:'Новый раздел', blocks:[{ t:'p', v:'Текст.' }] });
-    else if (act === 'add-p') S[si].blocks.push({ t:'p', v:'Новый абзац.' });
-    else if (act === 'blk-up') move(S[si].blocks, bi, -1);
-    else if (act === 'blk-down') move(S[si].blocks, bi, 1);
-    else if (act === 'blk-del') S[si].blocks.splice(bi, 1);
-    else if (act === 'sh-cycle'){
-      var cb = S[si].blocks[bi];
-      cb.sh = cb.sh === 'none' || !cb.sh ? 'soft' : (cb.sh === 'soft' ? 'box' : 'none');
-    }
-    else if (act === 'al-left') S[si].blocks[bi].align = 'left';
-    else if (act === 'al-right') S[si].blocks[bi].align = 'right';
-    else if (act === 'al-center') S[si].blocks[bi].align = 'center';
-    else if (act === 'al-none') S[si].blocks[bi].align = 'none';
-    else if (act === 'blk-reset'){
-      var bb = S[si].blocks[bi];
-      delete bb.w; delete bb.minh; bb.align = 'none';
-    }
     else return;
-    touch(); render();
-  });
+    touch(); repaint(scope);
+  }
 
+  function repaint(scope){ if (scope === 'book') bookRender(); else render(); }
+
+  ROOT.addEventListener('click', function(e){ blkClick(e, 'sheet'); });
 
   /* перетаскивание блоков */
   var dragFrom = null;
   function clearDT(){
-    var n = ROOT.querySelectorAll('.dt-top,.dt-bot');
+    var n = document.querySelectorAll('.dt-top,.dt-bot');
     for (var i = 0; i < n.length; i++) n[i].classList.remove('dt-top','dt-bot');
   }
-  ROOT.addEventListener('dragstart', function(e){
-    if (!editing) return;
-    var g = e.target.closest ? e.target.closest('.grip') : null;
-    if (!g) return;
-    var el = g.closest('.blk');
-    if (!el) return;
-    dragFrom = el.getAttribute('data-blk');
-    el.classList.add('dragging');
-    try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragFrom); } catch (x) {}
-  });
-  ROOT.addEventListener('dragover', function(e){
-    if (!editing || !dragFrom) return;
-    var t = e.target.closest ? e.target.closest('.blk') : null;
-    if (!t){
-      var sc = e.target.closest ? e.target.closest('section[data-sec]') : null;
-      if (!sc) return;
-      e.preventDefault(); clearDT(); return;
-    }
-    e.preventDefault(); clearDT();
-    var r = t.getBoundingClientRect();
-    t.classList.add(e.clientY < r.top + r.height / 2 ? 'dt-top' : 'dt-bot');
-  });
-  ROOT.addEventListener('drop', function(e){
-    if (!editing || !dragFrom) return;
-    e.preventDefault();
-    var f = dragFrom.split('.');
-    var from = { si: parseInt(f[0], 10), bi: parseInt(f[1], 10) };
-    var t = e.target.closest ? e.target.closest('.blk') : null;
-    var to;
-    if (t){
-      var p = t.getAttribute('data-blk').split('.');
-      var r = t.getBoundingClientRect();
-      to = { si: parseInt(p[0], 10), bi: parseInt(p[1], 10) + (e.clientY < r.top + r.height / 2 ? 0 : 1) };
-    } else {
-      var sc = e.target.closest ? e.target.closest('section[data-sec]') : null;
-      if (!sc){ dragFrom = null; clearDT(); return; }
-      var ssi = parseInt(sc.getAttribute('data-sec'), 10);
-      to = { si: ssi, bi: DOC.sections[ssi].blocks.length };
-    }
-    dragFrom = null; clearDT();
-    DOC = collect(); touch();
-    var blk = DOC.sections[from.si].blocks.splice(from.bi, 1)[0];
-    var bi2 = to.bi;
-    if (from.si === to.si && from.bi < bi2) bi2--;
-    DOC.sections[to.si].blocks.splice(bi2, 0, blk);
-    render();
-  });
-  ROOT.addEventListener('dragend', function(){
-    dragFrom = null; clearDT();
-    var d = ROOT.querySelector('.dragging');
-    if (d) d.classList.remove('dragging');
-  });
+  function dragWire(pool, scope){
+    pool.addEventListener('dragstart', function(e){
+      if (!editing) return;
+      var g = e.target.closest ? e.target.closest('.grip') : null;
+      if (!g){ e.preventDefault(); return; }
+      var el = g.closest('.blk');
+      if (!el){ e.preventDefault(); return; }
+      dragFrom = el.getAttribute('data-blk');
+      el.classList.add('dragging');
+      try { e.dataTransfer.setData('text/plain', dragFrom); e.dataTransfer.effectAllowed = 'move'; } catch (x) {}
+    });
+    pool.addEventListener('dragover', function(e){
+      if (!editing || !dragFrom) return;
+      e.preventDefault();
+      var t = e.target.closest ? e.target.closest('.blk') : null;
+      clearDT();
+      if (t && t.getAttribute('data-blk') !== dragFrom){
+        var r = t.getBoundingClientRect();
+        t.classList.add(e.clientY < r.top + r.height / 2 ? 'dt-top' : 'dt-bot');
+      }
+    });
+    pool.addEventListener('drop', function(e){
+      if (!editing || !dragFrom) return;
+      e.preventDefault();
+      var from = dragFrom, toPath = null, after = false;
+      var t = e.target.closest ? e.target.closest('.blk') : null;
+      if (t && t.getAttribute('data-blk') !== from){
+        var r = t.getBoundingClientRect();
+        toPath = t.getAttribute('data-blk');
+        after = e.clientY >= r.top + r.height / 2;
+      } else {
+        var hc = e.target.closest ? e.target.closest('[data-host]') : null;
+        if (!hc){ dragFrom = null; clearDT(); return; }
+        toPath = hc.getAttribute('data-host') + '.' + get(hc.getAttribute('data-host')).length;
+      }
+      dragFrom = null; clearDT();
+      DOC = collect();
+      if (!hasPath(from)){ repaint(scope); return; }
+      var F = parentOf(from), T = parentOf(toPath);
+      if (!F.arr || !T.arr){ repaint(scope); return; }
+      var blk = F.arr.splice(F.idx, 1)[0];
+      var at = T.idx + (after ? 1 : 0);
+      if (F.host === T.host && F.idx < at) at--;
+      T.arr.splice(Math.max(0, Math.min(T.arr.length, at)), 0, blk);
+      touch(); repaint(scope);
+    });
+    pool.addEventListener('dragend', function(){
+      dragFrom = null; clearDT();
+      var d = document.querySelector('.dragging');
+      if (d) d.classList.remove('dragging');
+    });
+  }
+  dragWire(ROOT, 'sheet');
 
   /* ручки размера */
   var RZ = null, TIP = null;
@@ -1227,23 +1602,26 @@
   }
   function untip(){ if (TIP) TIP.hidden = true; }
 
-  ROOT.addEventListener('pointerdown', function(e){
-    if (!editing) return;
-    var hnd = e.target.closest ? e.target.closest('.rz') : null;
-    if (!hnd) return;
-    var el = hnd.closest('.blk');
-    if (!el) return;
-    e.preventDefault();
-    var pr = el.getAttribute('data-blk').split('.');
-    var r = el.getBoundingClientRect();
-    var host = el.parentElement.getBoundingClientRect();
-    RZ = {
-      el: el, si: parseInt(pr[0], 10), bi: parseInt(pr[1], 10),
-      mode: hnd.classList.contains('rz-w') ? 'w' : (hnd.classList.contains('rz-h') ? 'h' : 'c'),
-      x0: e.clientX, y0: e.clientY, w0: r.width, h0: r.height, base: host.width || 1
-    };
-    try { hnd.setPointerCapture(e.pointerId); } catch (x) {}
-  });
+  function rzWire(pool, scope){
+    pool.addEventListener('pointerdown', function(e){
+      if (!editing) return;
+      var hnd = e.target.closest ? e.target.closest('.rz') : null;
+      if (!hnd) return;
+      var el = hnd.closest('.blk');
+      if (!el) return;
+      e.preventDefault();
+      var r = el.getBoundingClientRect();
+      var host = el.parentElement.getBoundingClientRect();
+      RZ = {
+        el: el, path: el.getAttribute('data-blk'), scope: scope,
+        mode: hnd.classList.contains('rz-w') ? 'w' : (hnd.classList.contains('rz-h') ? 'h' : 'c'),
+        x0: e.clientX, y0: e.clientY, w0: r.width, h0: r.height, base: host.width || 1
+      };
+      try { hnd.setPointerCapture(e.pointerId); } catch (x) {}
+    });
+  }
+  rzWire(ROOT, 'sheet');
+
   window.addEventListener('pointermove', function(e){
     if (!RZ) return;
     var txt = [];
@@ -1259,91 +1637,248 @@
       RZ.hpx = hp; txt.push(hp + 'px');
     }
     RZ.el.classList.add('sized');
-    tip(txt.join(' · '), e.clientX, e.clientY);
+    tip(txt.join(' \u00b7 '), e.clientX, e.clientY);
   });
   window.addEventListener('pointerup', function(){
     if (!RZ) return;
-    var b = DOC.sections[RZ.si] && DOC.sections[RZ.si].blocks[RZ.bi];
+    var keep = RZ; RZ = null; untip();
+    if (!hasPath(keep.path)) return;
+    var b = get(keep.path);
     if (b){
-      if (RZ.mode !== 'h' && RZ.pct != null) b.w = RZ.pct;
-      if (RZ.mode !== 'w' && RZ.hpx != null) b.minh = RZ.hpx;
+      if (keep.mode !== 'h' && keep.pct != null) b.w = keep.pct;
+      if (keep.mode !== 'w' && keep.hpx != null) b.minh = keep.hpx;
       touch();
     }
-    RZ = null; untip();
   });
 
+  /* ══ книга ═══════════════════════════════════════════════
+     Модель: DOC.book.pages — плоский список страниц.
+     sub:true — подраздел под ближайшей главой выше.
+     Развороты складываются парами на лету.                */
 
-  /* ── книга: разворот ────────────────────────── */
-  var bkIdx = 0, bkBusy = false, TOC_PER = 12;
+  var bkIdx = 0, bkBusy = false, TOC_PER = 14;
 
-  function cSpreads(){
-    if (!DOC.book) DOC.book = { title:'Книга', owner:'', note:'', spreads:[] };
-    if (!DOC.book.spreads) DOC.book.spreads = [];
-    return DOC.book.spreads;
+  var KINDS = {
+    chapter:   { ru:'Глава',   ic:'❖' },
+    entry:     { ru:'Запись',  ic:'✎' },
+    companion: { ru:'Спутник', ic:'♟' },
+    debt:      { ru:'Долг',    ic:'⚖' },
+    place:     { ru:'Место',   ic:'▲' },
+    find:      { ru:'Находка', ic:'◈' },
+    plain:     { ru:'Лист',    ic:'—' }
+  };
+  var KIND_ORDER = ['entry','companion','debt','place','find','chapter','plain'];
+
+  function bkNewId(){ return 'b' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36); }
+
+  function bkTemplate(kind){
+    if (kind === 'chapter') return [];
+    if (kind === 'companion') return [
+      { t:'img', mid:null, cap:'', sh:'none', tape:'corners', w:46, align:'right' },
+      { t:'gloss', items:[{ k:'Кто', v:'' }, { k:'Откуда', v:'' },
+                          { k:'Чем обязан', v:'' }, { k:'Чем обязан мне', v:'' }] },
+      { t:'note', v:'' }
+    ];
+    if (kind === 'debt') return [{ t:'ledger', rows:[{ d:'', k:'', v:'', off:false },
+                                                  { d:'', k:'', v:'', off:false }] }];
+    if (kind === 'place' || kind === 'find') return [
+      { t:'img', mid:null, cap:'', sh:'none', tape:'tape', w:52, align:'right' },
+      { t:'note', v:'' }
+    ];
+    return [{ t:'note', v:'' }];
   }
-  function headingOf(html){
-    var m = String(html || '').match(/<h3[^>]*>([\s\S]*?)<\/h3>/i);
-    return m ? m[1].replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() : '';
+
+  function bkPages(){
+    if (!DOC.book) DOC.book = { title:'Книга', owner:'', note:'', pages:[] };
+    if (!DOC.book.pages) DOC.book.pages = [];
+    return DOC.book.pages;
   }
+
+  /* старая модель (spreads с html) -> новая (pages с блоками) */
+  function bookMigrate(){
+    var bk = DOC.book;
+    if (!bk) { DOC.book = { title:'Долговая книга', owner:'', note:'', pages:[] }; return; }
+    if (bk.pages){
+      bk.pages.forEach(function(p){
+        if (!p.id) p.id = bkNewId();
+        if (!p.kind) p.kind = 'plain';
+        if (!p.blocks) p.blocks = [];
+        p.blocks.forEach(function(b){
+          if (b.t === 'img' && !b.mid && b.src){ var m = newMid(); MEDIA[m] = b.src; delete b.src; b.mid = m; }
+        });
+      });
+      return;
+    }
+    var out = [];
+    (bk.spreads || []).forEach(function(sp){
+      ['l','r'].forEach(function(side){
+        var html = String(sp[side] || '');
+        var bare = html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+        if (!bare) return;
+        var m = html.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i);
+        var head = m ? m[1].replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() : '';
+        var body = m ? html.replace(m[0], '') : html;
+        out.push({
+          id: bkNewId(), kind: 'plain', sub: false, h: head, date: '',
+          blocks: [{ t:'note', v: clean(body, true) }]
+        });
+      });
+    });
+    delete bk.spreads;
+    bk.pages = out;
+  }
+
+  /* ── оглавление ─────────────────────────────────────── */
   function tocEntries(){
     var out = [];
-    cSpreads().forEach(function(sp, i){
-      ['l','r'].forEach(function(side){
-        var t = headingOf(sp[side]);
-        if (t) out.push({ t: t, i: i });
-      });
+    bkPages().forEach(function(p, i){
+      if (!p.h && p.kind !== 'chapter') return;
+      out.push({ t: p.h || '—', i: i, sub: !!p.sub, kind: p.kind, date: p.date || '' });
     });
     return out;
   }
+
   function views(){
     var e = tocEntries();
-    var pages = Math.max(1, Math.ceil(e.length / TOC_PER));
+    var tocPages = Math.max(1, Math.ceil(e.length / TOC_PER));
     var v = [{ kind:'title' }];
     var used = 1;
-    while (used < pages){ v.push({ kind:'toc', a:used, b:used+1 }); used += 2; }
+    while (used < tocPages){ v.push({ kind:'toc', a:used, b:used + 1 }); used += 2; }
     v.offset = v.length;
-    cSpreads().forEach(function(_, i){ v.push({ kind:'content', i:i }); });
+    var n = bkPages().length;
+    for (var i = 0; i < n; i += 2) v.push({ kind:'content', a:i, b:i + 1 });
     return v;
   }
 
+  /* индекс разворота, на котором лежит страница i */
+  function spreadOf(i){ return views().offset + Math.floor(i / 2); }
+
   function tocListHTML(part){
-    var e = tocEntries(), off = views().offset;
+    var e = tocEntries();
     var slice = e.slice(part * TOC_PER, part * TOC_PER + TOC_PER);
     if (!slice.length){
       return part === 0
-        ? '<ol class="bk-toclist"><li class="bk-empty">Пока пусто. Добавьте разворот и поставьте странице заголовок — он появится здесь.</li></ol>'
+        ? '<ol class="bk-toclist"><li class="bk-empty">Пока пусто. Заведите страницу — её заголовок появится здесь.</li></ol>'
         : '<ol class="bk-toclist"></ol>';
     }
     return '<ol class="bk-toclist">' + slice.map(function(x){
-      return '<li><button type="button" class="bk-tocitem" data-goto="' + (off + x.i) + '">'
-        + '<span class="t">' + esc(x.t) + '</span><span class="d"></span>'
-        + '<span class="n">' + (off + x.i + 1) + '</span></button></li>';
+      var k = KINDS[x.kind] || KINDS.plain;
+      return '<li class="' + (x.sub ? 'lv2' : 'lv1') + '">'
+        + '<button type="button" class="bk-tocitem" data-goto="' + spreadOf(x.i) + '">'
+        + '<span class="ic" aria-hidden="true">' + k.ic + '</span>'
+        + '<span class="t">' + esc(x.t) + '</span>'
+        + (x.date ? '<span class="dt">' + esc(x.date) + '</span>' : '')
+        + '<span class="d"></span>'
+        + '<span class="n">' + (x.i + 1) + '</span></button></li>';
     }).join('') + '</ol>';
   }
 
+  /* ── ляссе: по одной ленте на главу ─────────────────── */
+  function ribbons(){
+    var out = [];
+    bkPages().forEach(function(p, i){
+      if (p.sub) return;
+      if (!p.h && p.kind !== 'chapter') return;
+      out.push({ t: p.h || '—', i: i });
+    });
+    return out.slice(0, 9);
+  }
+  function ribbonsHTML(){
+    var r = ribbons();
+    if (!r.length) return '';
+    return '<div class="bk-ribbons">' + r.map(function(x, n){
+      var here = bkIdx === spreadOf(x.i);
+      return '<button type="button" class="bk-rib r' + (n % 5) + (here ? ' on' : '') + '"'
+        + ' data-goto="' + spreadOf(x.i) + '" title="' + esc(x.t) + '">'
+        + '<span>' + esc(x.t) + '</span></button>';
+    }).join('') + '</div>';
+  }
+
+  /* ── старение: у каждой страницы своё, но постоянное ── */
+  function seedOf(str){
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = (h * 16777619) >>> 0; }
+    return h;
+  }
+  function wearHTML(id){
+    if (!DOC.book || DOC.book.wear === false) return '';
+    var h = seedOf(id || 'x'), out = '';
+    var blots = h % 3;
+    for (var i = 0; i < blots; i++){
+      h = (h * 16777619 + 7) >>> 0;
+      var x = 6 + (h % 86), y = 8 + ((h >> 7) % 82), s = 5 + ((h >> 13) % 16), o = 5 + ((h >> 3) % 7);
+      out += '<i class="blot" style="left:' + x + '%;top:' + y + '%;width:' + s + 'px;height:'
+        + (s * 0.82).toFixed(1) + 'px;opacity:.0' + o + '"></i>';
+    }
+    return '<div class="wear" aria-hidden="true">' + out + '</div>';
+  }
+
+  /* ── страница ───────────────────────────────────────── */
   function pageParts(v, side){
-    if (!v) return { cls:'', inner:'' };
+    if (!v) return { cls:'bk-blank', inner:'' };
+
     if (v.kind === 'title'){
       if (side === 'l'){
         return { cls:'bk-title', inner:
           '<img class="bk-crest" src="' + esc(MEDIA.crest || '') + '" alt="">'
           + '<div>' + ed('book.title','h3') + ed('book.owner','p')
-          + ed('book.note','p','bk-note') + '</div>' };
+          + ed('book.note','p','bk-note-line') + '</div>' };
       }
       return { cls:'bk-toc', inner:'<h3>Оглавление</h3>' + tocListHTML(0) };
     }
     if (v.kind === 'toc'){
       return { cls:'bk-toc', inner: tocListHTML(side === 'l' ? v.a : v.b) };
     }
-    var sp = cSpreads()[v.i] || {};
-    return { cls:'', inner: clean(sp[side] || '', true),
-             path:'book.spreads.' + v.i + '.' + side };
+
+    var i = side === 'l' ? v.a : v.b;
+    var P = bkPages()[i];
+    if (!P){
+      return { cls:'bk-blank', inner: editing
+        ? '<button type="button" class="bk-addhere" data-bk="add">+ страница</button>' : '' };
+    }
+
+    var k = KINDS[P.kind] || KINDS.plain;
+    var base = 'book.pages.' + i;
+    var head =
+      '<div class="bk-head' + (P.sub ? ' sub' : '') + '">'
+      + '<span class="bk-kind" title="' + esc(k.ru) + '">' + k.ic + '</span>'
+      + ed(base + '.h', 'h3')
+      + '<span class="bk-date" data-path="' + esc(base + '.date') + '" data-ph="дата">'
+      + clean(P.date) + '</span></div>';
+
+    var ctl = editing
+      ? '<div class="ctl pg-ctl">'
+        + '<span class="pg-lbl">стр. ' + (i + 1) + '</span>'
+        + '<select class="pg-kind" data-kind="' + i + '">'
+        + KIND_ORDER.map(function(kk){
+            return '<option value="' + kk + '"' + (kk === P.kind ? ' selected' : '') + '>'
+              + KINDS[kk].ru + '</option>'; }).join('')
+        + '</select>'
+        + btn('pg-sub', P.sub ? '⤷ подраздел' : '— глава')
+        + btn('add-note','+ текст') + btn('add-img','+ картинка')
+        + btn('add-gloss','+ поля') + btn('add-ledger','+ долги')
+        + btn('add-scrap','+ обрывок') + btn('add-seal','+ печать')
+        + btn('pg-up','←') + btn('pg-down','→')
+        + btn('pg-add','+ стр.') + btn('pg-del','× стр.')
+        + '</div>'
+      : '';
+
+    var body = (P.blocks || []).map(function(b, bi){
+      return blkNode(b, base + '.blocks.' + bi);
+    }).join('');
+
+    return {
+      cls: 'bk-kind-' + P.kind + (P.sub ? ' bk-sub' : ''),
+      host: base + '.blocks',
+      page: i,
+      inner: wearHTML(P.id) + head + ctl + '<div class="bk-body">' + body + '</div>'
+    };
   }
 
   function pageNode(v, side){
     var p = pageParts(v, side);
     return '<div class="bk-page bk-' + side + (p.cls ? ' ' + p.cls : '') + '"'
-      + (p.path ? ' data-path="' + esc(p.path) + '" data-rich="1"' : '')
+      + (p.host ? ' data-host="' + esc(p.host) + '" data-page="' + p.page + '"' : '')
       + '>' + p.inner + '</div>';
   }
 
@@ -1351,23 +1886,24 @@
     var v = views(), n = v.length;
     if (bkIdx >= n) bkIdx = n - 1;
     if (bkIdx < 0) bkIdx = 0;
-    var cur = v[bkIdx], isContent = cur && cur.kind === 'content';
-    var extra = editing
-      ? '<button type="button" data-bk="add">+ разворот</button>'
-        + (isContent ? '<button type="button" data-bk="del">× разворот</button>' : '')
-      : '';
+    var cur = v[bkIdx];
     BOOK.innerHTML =
       '<button type="button" class="bk-close" data-bk="close" aria-label="Закрыть">Закрыть</button>'
-      + '<div class="bk-stage"><div class="bk-book"><div class="bk-spread" id="bk-spread">'
-      + pageNode(cur, 'l') + pageNode(cur, 'r')
-      + '</div></div></div>'
+      + '<div class="bk-stage"><div class="bk-book">'
+      + '<div class="bk-spread" id="bk-spread">' + pageNode(cur, 'l') + pageNode(cur, 'r') + '</div>'
+      + ribbonsHTML()
+      + '</div></div>'
       + '<div class="bk-bar">'
       + '<button type="button" data-bk="prev"' + (bkIdx === 0 ? ' disabled' : '') + '>‹ Назад</button>'
       + '<span class="num">' + (bkIdx + 1) + ' / ' + n + '</span>'
       + '<button type="button" data-bk="next"' + (bkIdx === n - 1 ? ' disabled' : '') + '>Вперёд ›</button>'
       + (bkIdx > 0 ? '<button type="button" data-bk="toc">Оглавление</button>' : '')
-      + extra + '</div>';
-    if (editing) markEditable(true);
+      + '<button type="button" data-bk="new" class="primary">+ Запись</button>'
+      + '<button type="button" data-bk="snd" title="Звук страниц" aria-pressed="'
+      + (sndOn() ? 'true' : 'false') + '">' + (sndOn() ? '♪' : '·') + '</button>'
+      + '</div>';
+    bookEditable();
+    if (editing) applySel();
   }
 
   function bookOpen(){
@@ -1377,7 +1913,7 @@
     bookRender();
   }
   function bookClose(){
-    if (editing) DOC = collect();
+    DOC = collect();
     BOOK.classList.remove('on');
     BOOK.setAttribute('aria-hidden', 'true');
     BOOK.innerHTML = '';
@@ -1389,15 +1925,39 @@
     var n = views().length;
     if (to < 0 || to >= n || to === bkIdx) return;
     if (Math.abs(to - bkIdx) === 1){ bookGo(to > bkIdx ? 1 : -1); return; }
-    if (editing) DOC = collect();
+    DOC = collect();
     bkIdx = to; bookRender();
+  }
+
+  /* ── звук перелистывания, синтезом, без файлов ───────── */
+  var AC = null;
+  function sndOn(){ return !DOC.book || DOC.book.snd !== false; }
+  function pageSound(){
+    if (!sndOn()) return;
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      if (AC.state === 'suspended') AC.resume();
+      var dur = 0.34, n = Math.floor(AC.sampleRate * dur);
+      var buf = AC.createBuffer(1, n, AC.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < n; i++){
+        var t = i / n;
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 2.2) * Math.min(1, t * 26);
+      }
+      var src = AC.createBufferSource(); src.buffer = buf;
+      var bp = AC.createBiquadFilter(); bp.type = 'bandpass';
+      bp.frequency.value = 2100; bp.Q.value = 0.7;
+      var g = AC.createGain(); g.gain.value = 0.16;
+      src.connect(bp); bp.connect(g); g.connect(AC.destination);
+      src.start();
+    } catch (e){}
   }
 
   function bookGo(dir){
     var v = views(), to = bkIdx + dir;
     if (bkBusy || to < 0 || to >= v.length) return;
-    if (editing) DOC = collect();
+    DOC = collect();
     v = views();
+    pageSound();
 
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var sp = document.getElementById('bk-spread');
@@ -1425,35 +1985,132 @@
     setTimeout(finish, 820);
   }
 
+  /* ── новая запись: одна кнопка, курсор сразу в тексте ── */
+  function lastDate(){
+    var p = bkPages(), d = '';
+    for (var i = p.length - 1; i >= 0; i--){ if (p[i].date){ d = p[i].date; break; } }
+    return d;
+  }
+  function bookAdd(kind, at){
+    DOC = collect();
+    var P = bkPages();
+    if (at == null || at < 0 || at > P.length) at = P.length;
+    var page = {
+      id: bkNewId(), kind: kind, sub: false,
+      h: kind === 'entry' ? '' : KINDS[kind].ru,
+      date: kind === 'entry' ? lastDate() : '',
+      blocks: bkTemplate(kind)
+    };
+    P.splice(at, 0, page);
+    touch();
+    bkIdx = spreadOf(at);
+    bookRender();
+    focusPage(at);
+  }
+  function focusPage(i){
+    setTimeout(function(){
+      var pg = BOOK.querySelector('.bk-page[data-page="' + i + '"]');
+      if (!pg) return;
+      var tgt = pg.querySelector('h3[data-path]') || pg.querySelector('.bk-note');
+      if (!tgt) return;
+      tgt.focus();
+      try {
+        var r = document.createRange();
+        r.selectNodeContents(tgt); r.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(r);
+      } catch (e){}
+    }, 30);
+  }
+
+  /* ── события книги ──────────────────────────────────── */
   BOOK.addEventListener('click', function(e){
     var g = e.target.closest ? e.target.closest('[data-goto]') : null;
     if (g){ bookJump(parseInt(g.getAttribute('data-goto'), 10)); return; }
-    var b = e.target.closest ? e.target.closest('button[data-bk]') : null;
-    if (!b) return;
-    var act = b.getAttribute('data-bk');
-    if (act === 'close') bookClose();
-    else if (act === 'prev') bookGo(-1);
-    else if (act === 'next') bookGo(1);
-    else if (act === 'toc') bookJump(0);
-    else if (act === 'add'){
+
+    var tk = e.target.closest ? e.target.closest('[data-tick]') : null;
+    if (tk){
       DOC = collect();
-      var v = views(), cur = v[bkIdx];
-      var at = cur && cur.kind === 'content' ? cur.i + 1 : cSpreads().length;
-      cSpreads().splice(at, 0, { l:'<h3>Новая страница</h3><p>Текст.</p>', r:'<p></p>' });
-      bkIdx = views().offset + at;
-      touch(); bookRender();
-    } else if (act === 'del'){
-      DOC = collect();
-      var vv = views(), c = vv[bkIdx];
-      if (c && c.kind === 'content'){ cSpreads().splice(c.i, 1); touch(); bookRender(); }
+      var rp = tk.getAttribute('data-tick');
+      if (hasPath(rp)){ var row = get(rp); row.off = !row.off; touch(); bookRender(); }
+      return;
     }
+
+    var b = e.target.closest ? e.target.closest('button[data-bk]') : null;
+    if (b){
+      var act = b.getAttribute('data-bk');
+      if (act === 'close') bookClose();
+      else if (act === 'prev') bookGo(-1);
+      else if (act === 'next') bookGo(1);
+      else if (act === 'toc') bookJump(0);
+      else if (act === 'new') bookAdd('entry', bkPages().length);
+      else if (act === 'add'){
+        var vv = views(), c = vv[bkIdx];
+        bookAdd('entry', c && c.kind === 'content' ? c.b : bkPages().length);
+      }
+      else if (act === 'snd'){
+        DOC = collect();
+        DOC.book.snd = !sndOn();
+        touch(); bookRender();
+      }
+      return;
+    }
+
+    var pb = e.target.closest ? e.target.closest('button[data-act]') : null;
+    if (pb){
+      var a2 = pb.getAttribute('data-act');
+      var pgEl = pb.closest('[data-page]');
+      var pi = pgEl ? parseInt(pgEl.getAttribute('data-page'), 10) : -1;
+      if (pi >= 0 && (a2 === 'pg-up' || a2 === 'pg-down' || a2 === 'pg-del'
+                      || a2 === 'pg-add' || a2 === 'pg-sub')){
+        DOC = collect();
+        var PP = bkPages();
+        if (a2 === 'pg-up'){ if (!move(PP, pi, -1)) return; }
+        else if (a2 === 'pg-down'){ if (!move(PP, pi, 1)) return; }
+        else if (a2 === 'pg-del'){ PP.splice(pi, 1); }
+        else if (a2 === 'pg-sub'){ PP[pi].sub = !PP[pi].sub; }
+        else if (a2 === 'pg-add'){ bookAdd(PP[pi].kind || 'entry', pi + 1); return; }
+        touch();
+        if (bkIdx >= views().length) bkIdx = views().length - 1;
+        bookRender();
+        return;
+      }
+    }
+
+    blkClick(e, 'book');
   });
+
+  BOOK.addEventListener('change', function(e){
+    var sel = e.target.closest ? e.target.closest('.pg-kind') : null;
+    if (!sel) return;
+    DOC = collect();
+    var i = parseInt(sel.getAttribute('data-kind'), 10);
+    var P = bkPages()[i];
+    if (!P) return;
+    P.kind = sel.value;
+    /* добавляем то, чего этому типу не хватает, ничего не затирая */
+    P.blocks = P.blocks || [];
+    var have = {};
+    P.blocks.forEach(function(b){ have[b.t] = true; });
+    bkTemplate(P.kind).forEach(function(t){
+      if (!have[t.t]){ P.blocks.push(t); have[t.t] = true; }
+    });
+    touch(); bookRender();
+  });
+
+  dragWire(BOOK, 'book');
+  rzWire(BOOK, 'book');
 
   document.addEventListener('keydown', function(e){
     if (!BOOK.classList.contains('on')) return;
-    if (e.key === 'Escape') bookClose();
-    else if (e.key === 'ArrowRight' && !editing) bookGo(1);
-    else if (e.key === 'ArrowLeft' && !editing) bookGo(-1);
+    var typing = e.target && e.target.isContentEditable;
+    if (e.key === 'Escape'){
+      if (typing){ e.target.blur(); return; }
+      bookClose(); return;
+    }
+    if (typing) return;
+    if (e.key === 'ArrowRight') bookGo(1);
+    else if (e.key === 'ArrowLeft') bookGo(-1);
   });
 
   ROOT.addEventListener('click', function(e){
