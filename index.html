@@ -433,7 +433,8 @@
   }
   .bk-head.sub{margin-left:18px;border-bottom-style:dotted;}
   .bk-head h3{margin:0;outline:none;min-width:2ch;}
-  .bk-head h3:empty::before{content:"Заголовок";color:var(--ink-soft);opacity:.4;font-weight:400;}
+  .bk-head h3:empty::before{content:attr(data-ph);color:var(--ink-soft);opacity:.4;font-weight:400;}
+  .bk-head h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .bk-kind,.bk-tocitem .ic{
     font-family:"Segoe UI Symbol","Noto Sans Symbols2","DejaVu Sans",sans-serif;
   }
@@ -537,29 +538,45 @@
 
   /* ляссе */
   .bk-book{position:relative;}
+  /* закладки лежат на самой странице, у правого обреза:
+     так они не упираются в край окна и не обрезаются */
   .bk-ribbons{
-    position:absolute;top:26px;right:-13px;z-index:6;
+    position:absolute;top:24px;right:0;z-index:6;
     display:flex;flex-direction:column;gap:7px;align-items:flex-end;
   }
   .bk-rib{
-    border:0;cursor:pointer;padding:0;height:26px;width:26px;
-    border-radius:0 3px 3px 0;box-shadow:2px 2px 6px rgba(0,0,0,.42);
-    transition:width .16s;overflow:hidden;white-space:nowrap;
-    display:flex;align-items:center;
-    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;
-    font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#F2EBDA;
+    position:relative;border:0;cursor:pointer;padding:0;
+    height:26px;width:15px;flex:0 0 auto;
+    border-radius:3px 0 0 3px;
+    box-shadow:-1px 2px 6px rgba(0,0,0,.4);
+    transition:width .14s;
   }
-  .bk-rib span{padding-left:9px;opacity:0;transition:opacity .16s;}
-  .bk-rib:hover,.bk-rib:focus-visible{width:auto;min-width:26px;padding-right:11px;}
+  .bk-rib span{
+    position:absolute;right:100%;top:0;height:100%;
+    display:flex;align-items:center;
+    padding:0 11px;white-space:nowrap;
+    max-width:38vw;overflow:hidden;text-overflow:ellipsis;
+    background:inherit;border-radius:3px 0 0 3px;
+    box-shadow:-2px 2px 7px rgba(0,0,0,.34);
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;
+    font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#F2EBDA;
+    opacity:0;pointer-events:none;transition:opacity .14s;
+  }
+  .bk-rib:hover,.bk-rib:focus-visible{width:22px;}
   .bk-rib:hover span,.bk-rib:focus-visible span{opacity:1;}
+  .bk-rib:focus-visible{outline:2px solid #E8E0CC;outline-offset:1px;}
   .bk-rib.r0{background:#7C3A1F;} .bk-rib.r1{background:#49535A;}
   .bk-rib.r2{background:#5B6B45;} .bk-rib.r3{background:#6B4A2E;}
   .bk-rib.r4{background:#54405C;}
-  .bk-rib.on{width:34px;box-shadow:2px 2px 6px rgba(0,0,0,.42),inset 3px 0 0 rgba(232,224,204,.75);}
+  .bk-rib.on{width:22px;box-shadow:-1px 2px 6px rgba(0,0,0,.4),inset 2px 0 0 rgba(242,235,218,.8);}
 
   /* оглавление с подразделами */
-  .bk-toclist li.lv2{margin-left:22px;}
-  .bk-toclist li.lv2 .bk-tocitem{font-size:.94em;color:var(--ink-soft);}
+  .bk-page ul.bk-toclist,.bk-page ul.bk-toclist li{
+    list-style:none!important;padding-left:0;margin-left:0;
+  }
+  .bk-page ul.bk-toclist li::before,.bk-page ul.bk-toclist li::marker{content:none;}
+  .bk-page ul.bk-toclist li.lv2{margin-left:26px;}
+  .bk-page ul.bk-toclist li.lv2 .bk-tocitem{font-size:.94em;color:var(--ink-soft);}
   .bk-tocitem{grid-template-columns:auto auto 1fr auto;}
   .bk-tocitem .ic{color:var(--rust);font-size:.9em;}
   .bk-tocitem .dt{
@@ -619,9 +636,8 @@
   .msg.off{color:#C98A5E;}
 
   @media (max-width:760px){
-    .bk-ribbons{top:auto;bottom:-13px;right:auto;left:14px;
-      flex-direction:row;align-items:flex-start;}
-    .bk-rib{border-radius:0 0 3px 3px;height:22px;width:22px;}
+    .bk-ribbons{top:6px;right:0;}
+    .bk-rib span{max-width:62vw;}
   }
   @media (prefers-reduced-motion: reduce){.bk-rib{transition:none;}}
   @media print{.pg-ctl,.bk-ribbons,.wear{display:none!important;}}
@@ -1095,6 +1111,13 @@
   }
   function copy(o){ return JSON.parse(JSON.stringify(o)); }
 
+  /* голый текст: заголовки и даты хранятся строкой, без тегов */
+  function plain(html){
+    var d = document.createElement('div');
+    d.innerHTML = String(html == null ? '' : html).replace(/<[^>]*>/g, ' ');
+    return (d.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
   var ALLOWED = {STRONG:1, B:1, EM:1, I:1, BR:1};
   var RICH = {STRONG:1, B:1, EM:1, I:1, BR:1, P:1, H3:1, UL:1, OL:1, LI:1, DIV:1};
   function clean(html, rich){
@@ -1346,8 +1369,9 @@
     for (var p = 0; p < pools.length; p++){
       var nodes = pools[p].querySelectorAll('[data-path]');
       for (var i = 0; i < nodes.length; i++){
-        var rich = nodes[i].hasAttribute('data-rich');
-        set(nodes[i].getAttribute('data-path'), clean(nodes[i].innerHTML, rich));
+        var n = nodes[i];
+        if (n.hasAttribute('data-plain')) set(n.getAttribute('data-path'), plain(n.innerHTML));
+        else set(n.getAttribute('data-path'), clean(n.innerHTML, n.hasAttribute('data-rich')));
       }
     }
     DOC = keep;
@@ -1661,7 +1685,7 @@
   var KINDS = {
     chapter:   { ru:'Глава',   ic:'❖' },
     entry:     { ru:'Запись',  ic:'✎' },
-    companion: { ru:'Спутник', ic:'♟' },
+    companion: { ru:'Спутник', ic:'✦' },
     debt:      { ru:'Долг',    ic:'⚖' },
     place:     { ru:'Место',   ic:'▲' },
     find:      { ru:'Находка', ic:'◈' },
@@ -1732,8 +1756,9 @@
   function tocEntries(){
     var out = [];
     bkPages().forEach(function(p, i){
-      if (!p.h && p.kind !== 'chapter') return;
-      out.push({ t: p.h || '—', i: i, sub: !!p.sub, kind: p.kind, date: p.date || '' });
+      var t = plain(p.h);
+      if (!t && p.kind !== 'chapter') return;
+      out.push({ t: t || '—', i: i, sub: !!p.sub, kind: p.kind, date: plain(p.date) });
     });
     return out;
   }
@@ -1758,10 +1783,10 @@
     var slice = e.slice(part * TOC_PER, part * TOC_PER + TOC_PER);
     if (!slice.length){
       return part === 0
-        ? '<ol class="bk-toclist"><li class="bk-empty">Пока пусто. Заведите страницу — её заголовок появится здесь.</li></ol>'
-        : '<ol class="bk-toclist"></ol>';
+        ? '<ul class="bk-toclist"><li class="bk-empty">Пока пусто. Заведите страницу — её заголовок появится здесь.</li></ul>'
+        : '<ul class="bk-toclist"></ul>';
     }
-    return '<ol class="bk-toclist">' + slice.map(function(x){
+    return '<ul class="bk-toclist">' + slice.map(function(x){
       var k = KINDS[x.kind] || KINDS.plain;
       return '<li class="' + (x.sub ? 'lv2' : 'lv1') + '">'
         + '<button type="button" class="bk-tocitem" data-goto="' + spreadOf(x.i) + '">'
@@ -1770,7 +1795,7 @@
         + (x.date ? '<span class="dt">' + esc(x.date) + '</span>' : '')
         + '<span class="d"></span>'
         + '<span class="n">' + (x.i + 1) + '</span></button></li>';
-    }).join('') + '</ol>';
+    }).join('') + '</ul>';
   }
 
   /* ── ляссе: по одной ленте на главу ─────────────────── */
@@ -1778,8 +1803,9 @@
     var out = [];
     bkPages().forEach(function(p, i){
       if (p.sub) return;
-      if (!p.h && p.kind !== 'chapter') return;
-      out.push({ t: p.h || '—', i: i });
+      var t = plain(p.h);
+      if (!t && p.kind !== 'chapter') return;
+      out.push({ t: t || '—', i: i });
     });
     return out.slice(0, 9);
   }
@@ -1789,7 +1815,7 @@
     return '<div class="bk-ribbons">' + r.map(function(x, n){
       var here = bkIdx === spreadOf(x.i);
       return '<button type="button" class="bk-rib r' + (n % 5) + (here ? ' on' : '') + '"'
-        + ' data-goto="' + spreadOf(x.i) + '" title="' + esc(x.t) + '">'
+        + ' data-goto="' + spreadOf(x.i) + '" aria-label="' + esc(x.t) + '">'
         + '<span>' + esc(x.t) + '</span></button>';
     }).join('') + '</div>';
   }
@@ -1842,9 +1868,10 @@
     var head =
       '<div class="bk-head' + (P.sub ? ' sub' : '') + '">'
       + '<span class="bk-kind" title="' + esc(k.ru) + '">' + k.ic + '</span>'
-      + ed(base + '.h', 'h3')
-      + '<span class="bk-date" data-path="' + esc(base + '.date') + '" data-ph="дата">'
-      + clean(P.date) + '</span></div>';
+      + '<h3 data-path="' + esc(base + '.h') + '" data-plain="1" data-ph="Заголовок">'
+      + esc(plain(P.h)) + '</h3>'
+      + '<span class="bk-date" data-path="' + esc(base + '.date') + '" data-plain="1" data-ph="дата">'
+      + esc(plain(P.date)) + '</span></div>';
 
     var ctl = editing
       ? '<div class="ctl pg-ctl">'
@@ -1854,7 +1881,7 @@
             return '<option value="' + kk + '"' + (kk === P.kind ? ' selected' : '') + '>'
               + KINDS[kk].ru + '</option>'; }).join('')
         + '</select>'
-        + btn('pg-sub', P.sub ? '⤷ подраздел' : '— глава')
+        + btn('pg-sub', P.sub ? '↑ поднять в главы' : '⤷ сделать подразделом')
         + btn('add-note','+ текст') + btn('add-img','+ картинка')
         + btn('add-gloss','+ поля') + btn('add-ledger','+ долги')
         + btn('add-scrap','+ обрывок') + btn('add-seal','+ печать')
@@ -2100,6 +2127,23 @@
 
   dragWire(BOOK, 'book');
   rzWire(BOOK, 'book');
+
+  BOOK.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter') return;
+    var n = e.target;
+    if (!n || !n.hasAttribute || !n.hasAttribute('data-plain')) return;
+    e.preventDefault();
+    var pg = n.closest('.bk-page');
+    var next = pg && (pg.querySelector('.bk-note') || pg.querySelector('[data-path]:not([data-plain])'));
+    if (next){
+      next.focus();
+      try {
+        var r = document.createRange();
+        r.selectNodeContents(next); r.collapse(false);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      } catch (x){}
+    } else n.blur();
+  });
 
   document.addEventListener('keydown', function(e){
     if (!BOOK.classList.contains('on')) return;
