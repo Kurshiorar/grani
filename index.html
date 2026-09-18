@@ -453,20 +453,33 @@
     font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-weight:400;
     text-transform:uppercase;letter-spacing:.11em;font-size:.64rem;
     color:var(--ink-soft);text-align:left;border-bottom:1px solid var(--iron);
-    padding:0 6px 4px 0;
+    padding:0 8px 4px 0;
   }
-  .ledger td{padding:5px 6px 5px 0;border-bottom:1px dotted var(--rule);vertical-align:top;}
-  .ledger td span{outline:none;display:block;min-height:1.2em;}
+  .ledger td{padding:7px 8px 7px 0;border-bottom:1px dotted var(--rule);vertical-align:top;}
+  .ledger span{outline:none;display:block;min-height:1.2em;}
   [data-ph]:empty::before{content:attr(data-ph);color:var(--ink-soft);opacity:.42;}
   .gloss dt[data-ph]:empty::before,.gloss dd[data-ph]:empty::before{font-weight:400;}
-  .ledger .lg-d{width:6.5em;font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:.86em;}
-  .ledger .lg-x{width:1.8em;text-align:right;}
-  .ledger tr.off .lg-k,.ledger tr.off .lg-v{text-decoration:line-through;opacity:.5;}
+
+  /* первый столбец: дата сверху, имя под ней */
+  .ledger .lg-who{width:9.5em;}
+  .ledger .lg-d{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;
+    font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-soft);font-variant-numeric:tabular-nums;min-height:1em;
+  }
+  .ledger .lg-n{font-weight:700;margin-top:1px;}
+  .ledger .lg-v{width:34%;color:var(--ink-soft);}
+  .ledger .lg-x{width:1.8em;text-align:right;padding-right:0;}
+
+  /* закрытый долг: вычеркнут сам долг, расчёт остаётся читаемым */
+  .ledger tr.off .lg-k span{text-decoration:line-through;opacity:.5;}
+  .ledger tr.off .lg-n,.ledger tr.off .lg-d{opacity:.55;}
+  .ledger tr.off .lg-v{color:var(--ink);}
+
   .lg-tick{
     border:1px solid var(--rule);background:none;color:var(--rust);
     width:19px;height:19px;line-height:1;cursor:pointer;padding:0;border-radius:2px;
   }
-  .lg-tick[aria-pressed="true"]{background:var(--rust);color:#F2EBDA;border-color:var(--rust);}
 
   /* обрывок чужой записки */
   .scrap{
@@ -575,6 +588,21 @@
     list-style:none!important;padding-left:0;margin-left:0;
   }
   .bk-page ul.bk-toclist li::before,.bk-page ul.bk-toclist li::marker{content:none;}
+  /* правка порядка в оглавлении */
+  .bk-page ul.bk-toclist li{display:flex;align-items:center;gap:4px;}
+  .bk-page ul.bk-toclist li .bk-tocitem{flex:1 1 auto;min-width:0;}
+  .toc-ctl{display:flex;gap:2px;flex:0 0 auto;}
+  .toc-ctl button{
+    font-family:"PT Sans Narrow",Arial Narrow,sans-serif;font-size:.62rem;
+    line-height:1;padding:3px 5px;cursor:pointer;border-radius:0;
+    border:1px solid var(--rule);background:var(--vellum);color:var(--ink-soft);
+  }
+  .toc-ctl button:hover{background:var(--rust);color:#F2EBDA;border-color:var(--rust);}
+  .toc-ctl .grip-toc{cursor:grab;}
+  .toc-ctl .grip-toc:active{cursor:grabbing;}
+  .bk-page ul.bk-toclist li.dragging{opacity:.35;}
+  .bk-page ul.bk-toclist li.dt-top{box-shadow:0 -2px 0 var(--rust);}
+  .bk-page ul.bk-toclist li.dt-bot{box-shadow:0 2px 0 var(--rust);}
   .bk-page ul.bk-toclist li.lv2{margin-left:26px;}
   .bk-page ul.bk-toclist li.lv2 .bk-tocitem{font-size:.94em;color:var(--ink-soft);}
   .bk-tocitem{grid-template-columns:auto auto 1fr auto;}
@@ -1170,8 +1198,8 @@
       + (cls ? ' class="' + cls + '"' : '') + '>' + clean(get(path)) + '</' + tag + '>';
   }
   function edp(path, tag, ph, cls){
-    return '<' + tag + ' data-path="' + esc(path) + '" data-ph="' + esc(ph) + '"'
-      + (cls ? ' class="' + cls + '"' : '') + '>' + clean(get(path)) + '</' + tag + '>';
+    return '<' + tag + ' data-path="' + esc(path) + '" data-plain="1" data-ph="' + esc(ph) + '"'
+      + (cls ? ' class="' + cls + '"' : '') + '>' + esc(plain(get(path))) + '</' + tag + '>';
   }
   function btn(act, label){
     return '<button type="button" data-act="' + act + '">' + esc(label) + '</button>';
@@ -1213,15 +1241,17 @@
       var rows = (b.rows || []).map(function(r, i){
         var rp = p + '.rows.' + i;
         return '<tr class="' + (r.off ? 'off' : '') + '">'
-          + '<td class="lg-d">' + edp(rp + '.d', 'span', 'дата') + '</td>'
-          + '<td class="lg-k">' + edp(rp + '.k', 'span', 'что') + '</td>'
-          + '<td class="lg-v">' + edp(rp + '.v', 'span', 'кому / от кого') + '</td>'
+          + '<td class="lg-who">'
+          + edp(rp + '.d', 'span', 'дата', 'lg-d')
+          + edp(rp + '.n', 'span', 'имя', 'lg-n') + '</td>'
+          + '<td class="lg-k">' + edp(rp + '.k', 'span', 'за что') + '</td>'
+          + '<td class="lg-v">' + edp(rp + '.v', 'span', 'чем закрыт') + '</td>'
           + '<td class="lg-x"><button type="button" class="lg-tick" data-tick="' + esc(rp) + '"'
           + ' title="' + (r.off ? 'Отдано' : 'Не отдано') + '" aria-pressed="' + (r.off ? 'true' : 'false') + '">'
           + (r.off ? '\u2715' : '\u00b7') + '</button></td></tr>';
       }).join('');
       return '<table class="ledger"><thead><tr>'
-        + '<th>Когда</th><th>Что</th><th>Кому / от кого</th><th></th>'
+        + '<th>Когда и кто</th><th>Долг</th><th>Расчёт</th><th></th>'
         + '</tr></thead><tbody>' + rows + '</tbody></table>';
     }
 
@@ -1516,7 +1546,7 @@
       else if (act === 'al-none') blk.align = 'none';
       else if (act === 'blk-reset'){ delete blk.w; delete blk.minh; blk.align = 'none'; }
       else if (act === 'row-add'){
-        if (blk.t === 'ledger') (blk.rows = blk.rows || []).push({ d:'', k:'', v:'', off:false });
+        if (blk.t === 'ledger') (blk.rows = blk.rows || []).push(newRow());
         else (blk.items = blk.items || []).push({ k:'', v:'' });
       }
       else return;
@@ -1527,7 +1557,7 @@
       var H = get(host);
       if (act === 'add-p') H.push({ t:'p', v:'Новый абзац.' });
       else if (act === 'add-note') H.push({ t:'note', v:'' });
-      else if (act === 'add-ledger') H.push({ t:'ledger', rows:[{ d:'', k:'', v:'', off:false }] });
+      else if (act === 'add-ledger') H.push({ t:'ledger', lv:2, rows:[newRow()] });
       else if (act === 'add-gloss') H.push({ t:'gloss', items:[{ k:'', v:'' }] });
       else if (act === 'add-scrap') H.push({ t:'scrap', v:'Чужой почерк.' });
       else if (act === 'add-seal') H.push({ t:'seal', v:'\u0421' });
@@ -1564,6 +1594,7 @@
   function dragWire(pool, scope){
     pool.addEventListener('dragstart', function(e){
       if (!editing) return;
+      if (e.target.closest && e.target.closest('.bk-toclist')) return;
       var g = e.target.closest ? e.target.closest('.grip') : null;
       if (!g){ e.preventDefault(); return; }
       var el = g.closest('.blk');
@@ -1693,6 +1724,46 @@
   };
   var KIND_ORDER = ['entry','companion','debt','place','find','chapter','plain'];
 
+  /* группа = страница вместе со своими подразделами */
+  function pageGroup(i){
+    var P = bkPages();
+    if (!P[i]) return [i, 1];
+    if (P[i].sub) return [i, 1];
+    var n = 1;
+    while (i + n < P.length && P[i + n].sub) n++;
+    return [i, n];
+  }
+
+  /* перенести группу так, чтобы она встала перед страницей to */
+  function movePages(from, to){
+    var P = bkPages();
+    var g = pageGroup(from);
+    if (to >= g[0] && to <= g[0] + g[1]) return g[0];
+    var chunk = P.splice(g[0], g[1]);
+    var at = to > g[0] ? to - g[1] : to;
+    at = Math.max(0, Math.min(P.length, at));
+    P.splice.apply(P, [at, 0].concat(chunk));
+    return at;
+  }
+
+  /* шаг вверх/вниз: глава перешагивает соседнюю главу целиком */
+  function moveGroup(i, dir){
+    var P = bkPages();
+    var g = pageGroup(i);
+    if (dir < 0){
+      if (g[0] === 0) return -1;
+      var prev = g[0] - 1;
+      if (!P[g[0]].sub) while (prev > 0 && P[prev].sub) prev--;
+      return movePages(g[0], prev);
+    }
+    var after = g[0] + g[1];
+    if (after >= P.length) return -1;
+    var nx = pageGroup(after);
+    return movePages(g[0], after + nx[1]);
+  }
+
+  function newRow(){ return { d:'', n:'', k:'', v:'', off:false }; }
+
   function bkNewId(){ return 'b' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36); }
 
   function bkTemplate(kind){
@@ -1703,8 +1774,7 @@
                           { k:'Чем обязан', v:'' }, { k:'Чем обязан мне', v:'' }] },
       { t:'note', v:'' }
     ];
-    if (kind === 'debt') return [{ t:'ledger', rows:[{ d:'', k:'', v:'', off:false },
-                                                  { d:'', k:'', v:'', off:false }] }];
+    if (kind === 'debt') return [{ t:'ledger', lv:2, rows:[newRow(), newRow(), newRow()] }];
     if (kind === 'place' || kind === 'find') return [
       { t:'img', mid:null, cap:'', sh:'none', tape:'tape', w:52, align:'right' },
       { t:'note', v:'' }
@@ -1729,6 +1799,13 @@
         if (!p.blocks) p.blocks = [];
         p.blocks.forEach(function(b){
           if (b.t === 'img' && !b.mid && b.src){ var m = newMid(); MEDIA[m] = b.src; delete b.src; b.mid = m; }
+          /* старый столбец «кому / от кого» был про человека — он и есть имя */
+          if (b.t === 'ledger' && b.lv !== 2){
+            (b.rows || []).forEach(function(r){
+              if (r.n === undefined){ r.n = r.v || ''; r.v = ''; }
+            });
+            b.lv = 2;
+          }
         });
       });
       return;
@@ -1788,7 +1865,15 @@
     }
     return '<ul class="bk-toclist">' + slice.map(function(x){
       var k = KINDS[x.kind] || KINDS.plain;
-      return '<li class="' + (x.sub ? 'lv2' : 'lv1') + '">'
+      return '<li class="' + (x.sub ? 'lv2' : 'lv1') + '" data-toc="' + x.i + '">'
+        + (editing ? '<span class="toc-ctl">'
+            + '<button type="button" class="grip-toc" draggable="true" title="Перетащить">&#10294;</button>'
+            + '<button type="button" data-tmove="-1" title="Выше">&#8593;</button>'
+            + '<button type="button" data-tmove="1" title="Ниже">&#8595;</button>'
+            + '<button type="button" data-tsub="1" title="'
+            + (x.sub ? 'Поднять в главы' : 'Сделать подразделом') + '">'
+            + (x.sub ? '&#10548;' : '&#10551;') + '</button>'
+            + '</span>' : '')
         + '<button type="button" class="bk-tocitem" data-goto="' + spreadOf(x.i) + '">'
         + '<span class="ic" aria-hidden="true">' + k.ic + '</span>'
         + '<span class="t">' + esc(x.t) + '</span>'
@@ -2052,6 +2137,25 @@
 
   /* ── события книги ──────────────────────────────────── */
   BOOK.addEventListener('click', function(e){
+    /* правка порядка прямо в оглавлении */
+    var li = e.target.closest ? e.target.closest('li[data-toc]') : null;
+    if (li && editing){
+      var mv = e.target.closest('[data-tmove]');
+      var sb = e.target.closest('[data-tsub]');
+      if (mv || sb){
+        DOC = collect();
+        var i = parseInt(li.getAttribute('data-toc'), 10);
+        if (sb){
+          var P = bkPages();
+          if (P[i]) P[i].sub = !P[i].sub;
+        } else {
+          if (moveGroup(i, parseInt(mv.getAttribute('data-tmove'), 10)) < 0) return;
+        }
+        touch(); bookRender();
+        return;
+      }
+    }
+
     var g = e.target.closest ? e.target.closest('[data-goto]') : null;
     if (g){ bookJump(parseInt(g.getAttribute('data-goto'), 10)); return; }
 
@@ -2128,13 +2232,64 @@
   dragWire(BOOK, 'book');
   rzWire(BOOK, 'book');
 
+  /* ── перетаскивание строк оглавления ─────────────────── */
+  var tocFrom = null;
+  function tocClear(){
+    var n = BOOK.querySelectorAll('li[data-toc].dt-top,li[data-toc].dt-bot');
+    for (var i = 0; i < n.length; i++) n[i].classList.remove('dt-top','dt-bot');
+  }
+  BOOK.addEventListener('dragstart', function(e){
+    if (!editing) return;
+    var g = e.target.closest ? e.target.closest('.grip-toc') : null;
+    if (!g) return;
+    var li = g.closest('li[data-toc]');
+    if (!li) return;
+    tocFrom = parseInt(li.getAttribute('data-toc'), 10);
+    li.classList.add('dragging');
+    try { e.dataTransfer.setData('text/plain', String(tocFrom)); e.dataTransfer.effectAllowed = 'move'; } catch (x){}
+  });
+  BOOK.addEventListener('dragover', function(e){
+    if (!editing || tocFrom == null) return;
+    var li = e.target.closest ? e.target.closest('li[data-toc]') : null;
+    if (!li) return;
+    e.preventDefault();
+    tocClear();
+    var r = li.getBoundingClientRect();
+    li.classList.add(e.clientY < r.top + r.height / 2 ? 'dt-top' : 'dt-bot');
+  });
+  BOOK.addEventListener('drop', function(e){
+    if (!editing || tocFrom == null) return;
+    var li = e.target.closest ? e.target.closest('li[data-toc]') : null;
+    var from = tocFrom;
+    tocFrom = null; tocClear();
+    if (!li) return;
+    e.preventDefault();
+    var r = li.getBoundingClientRect();
+    var target = parseInt(li.getAttribute('data-toc'), 10);
+    var to = e.clientY < r.top + r.height / 2 ? target : target + pageGroup(target)[1];
+    DOC = collect();
+    movePages(from, to);
+    touch(); bookRender();
+  });
+  BOOK.addEventListener('dragend', function(){
+    tocFrom = null; tocClear();
+    var d = BOOK.querySelector('li[data-toc].dragging');
+    if (d) d.classList.remove('dragging');
+  });
+
   BOOK.addEventListener('keydown', function(e){
     if (e.key !== 'Enter') return;
     var n = e.target;
     if (!n || !n.hasAttribute || !n.hasAttribute('data-plain')) return;
     e.preventDefault();
     var pg = n.closest('.bk-page');
-    var next = pg && (pg.querySelector('.bk-note') || pg.querySelector('[data-path]:not([data-plain])'));
+    var all = pg ? Array.prototype.slice.call(pg.querySelectorAll('[data-path]')) : [];
+    var next;
+    /* из заголовка и даты — сразу в текст страницы: после названия хочется писать,
+       а не заполнять поля. Из клетки таблицы — в следующую клетку. */
+    if (pg && (n.tagName === 'H3' || n.classList.contains('bk-date')))
+      next = pg.querySelector('.bk-note') || all[all.indexOf(n) + 1];
+    else next = all[all.indexOf(n) + 1];
     if (next){
       next.focus();
       try {
